@@ -31,6 +31,8 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 # Copy the rest of the source files into the image.
 COPY . .
 
+COPY *.sql /docker-entrypoint-initdb.d/
+
 # Expose the port that the application listens on.
 EXPOSE 3000
 
