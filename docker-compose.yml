@@ -52,4 +52,4 @@ services:
 volumes:
   postgres_data:
   pgadmin-data:
-
+  db-data:
