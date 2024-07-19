@@ -1,6 +1,8 @@
 // Signup.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './Signup.css'; // Importez le fichier CSS
+import logo from '../assets/logo.png';
 
 //A changer pour que l'enregistrement des infos soit réglé par la database
 const Signup = () => {
@@ -30,52 +32,60 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
+    <div className="subscribe-container">
+      <div className="subscribe-card">
+      <img src={logo} alt="Carbs Guru Logo" className="logo" />
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="input-group">
           <label>Email:</label>
           <input
             type="email"
             name="email"
+            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Username:</label>
           <input
             type="text"
             name="username"
+            placeholder="Enter your username"
             value={formData.username}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Password:</label>
           <input
             type="password"
             name="password"
+            placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Confirm Password:</label>
           <input
             type="password"
             name="confirmPassword"
+            placeholder="Confim password"
             value={formData.confirmPassword}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="subscribe-button">Sign Up</button>
       </form>
-      <Link to="/signin">Login here</Link>
+      <p className="signin-link">
+        Already have an account? <Link to="/signin">Login here</Link>
+      </p>
+      </div>
     </div>
   );
 };

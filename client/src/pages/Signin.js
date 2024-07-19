@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Signin.css'; // Importez le fichier CSS
+import logo from '../assets/logo.png';
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const Signin = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <img src="../assets/logo.png" alt="Carbs Guru Logo" className="logo" />
+        <img src={logo} alt="Carbs Guru Logo" className="logo" />
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Email:</label>
