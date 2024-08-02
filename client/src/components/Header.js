@@ -1,11 +1,15 @@
 // Header.js
 import React from 'react';
+import logo from '../assets/logo.png';
+import './Header.css';
+
 
 const Header = () => {
   return (
-    <header>
-      <h1>My Application</h1>
-    </header>
+    <div className="header">
+      <img src={logo} alt="Carbs Guru Logo" className="logo-header" />
+      <h1 className="header-title">Carbs Guru</h1>
+    </div>
   );
 };
 
