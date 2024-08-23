@@ -2,6 +2,7 @@ import express from 'express';
 import { Sequelize } from '@sequelize/core';
 import { PostgresDialect } from '@sequelize/postgres';
 import dotenv from 'dotenv';
+import { QueryTypes } from 'sequelize';
 dotenv.config()
 
 const app = express();
@@ -24,6 +25,11 @@ try {
     console.log("Not connected");
 }
 
+const users = await sequelize.query('SELECT * FROM Program', {
+  type: QueryTypes.SELECT,
+});
+
+console.log("Users: ", users);
 
 //test api with error handling
 app.get('/test', (req, res, next) => {
