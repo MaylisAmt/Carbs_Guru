@@ -1,9 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env'})
 import express from 'express';
 import { Sequelize } from '@sequelize/core';
 import { PostgresDialect } from '@sequelize/postgres';
-import dotenv from 'dotenv';
 import { QueryTypes } from 'sequelize';
-dotenv.config()
 
 const app = express();
 //use json
@@ -14,7 +14,7 @@ const sequelize = new Sequelize({
     database: process.env.POSTGRES_DB,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    host: 'localhost',
+    host: 'db',
     port: 5432
   });
 
@@ -30,6 +30,8 @@ const users = await sequelize.query('SELECT * FROM Program', {
 });
 
 console.log("Users: ", users);
+console.log("env variable pg user: ", process.env)
+console.log("dirname: ", __dirname)
 
 //test api with error handling
 app.get('/test', (req, res, next) => {

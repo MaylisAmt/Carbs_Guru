@@ -2,11 +2,11 @@ import './App.css';
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Signup from './pages/Signup';
-import Signin from './pages/Signin';
+import Home from './pages/Home.js';
+import About from './pages/About.js';
+import Contact from './pages/Contact.js';
+import Signup from './pages/Signup.js';
+import Signin from './pages/Signin.js';
 
 function App() {
   return (
