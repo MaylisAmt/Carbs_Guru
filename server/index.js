@@ -25,13 +25,11 @@ try {
     console.log("Not connected");
 }
 
-const users = await sequelize.query('SELECT * FROM Program', {
+const programs = await sequelize.query('SELECT * FROM Program', {
   type: QueryTypes.SELECT,
 });
 
-console.log("Users: ", users);
-console.log("env variable pg user: ", process.env)
-console.log("dirname: ", __dirname)
+console.log("Programs: ", programs);
 
 //test api with error handling
 app.get('/test', (req, res, next) => {
