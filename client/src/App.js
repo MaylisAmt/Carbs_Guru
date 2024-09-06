@@ -7,6 +7,7 @@ import About from './pages/About.js';
 import Contact from './pages/Contact.js';
 import Signup from './pages/Signup.js';
 import Signin from './pages/Signin.js';
+import Account from './pages/Account.js';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/contact" element={<Contact/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/signin" element={<Signin/>} />
+          <Route path="/account" element={<Account/>} />
         </Routes>
       </Router>
     </div>
