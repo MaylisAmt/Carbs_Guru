@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
+import { AuthProvider } from "@propelauth/react";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <AuthProvider authUrl={process.env.REACT_APP_AUTH_URL}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+    </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
