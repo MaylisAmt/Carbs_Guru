@@ -1,35 +1,78 @@
 import React, { useEffect, useState } from 'react'
-//import axios from 'axios'
+import axios from 'axios'
 import icon from '../assets/icon.png'
 import './Account.css';
+import { withAuthInfo } from '@propelauth/react';
 
-const Account = () => {
-  const [programs, setPrograms]=useState([ ])
-  useEffect(()=> {
-    // const fetchUserPrograms = async ()=>{
-    //     try{
-    //         const res = await axios.get('http://localhost:3000/programs')
-    //         setPrograms(res.data.message)
-    //         console.log(res)
-    //     }catch(err){
-    //         console.log(err)
-    //     }
+async function testrecupid(accessToken) {
+  return fetch('http://localhost:3000/testrecupid', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+  }).then((res) => res.json())
+}
+
+async function getPrograms(accessToken) {
+  return fetch('http://localhost:3000/programs',{
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      },
+  }).then((res) => res.json())
+}
+
+const Account = withAuthInfo((props) => {
+
+  const [serverResponse, setServerResponse] = useState(undefined)
+  const [programs, setPrograms]=useState([])
+  
+    useEffect(()=> {
+      testrecupid(props.accessToken).then(setServerResponse)
+    }, [props.accessToken])
+
+    useEffect(()=> {
+      getPrograms(props.accessToken).then(setPrograms)
+    }, [props.accessToken])
+
+    if (props.isLoggedIn) {
+
+  // const [programs, setPrograms]=useState([ ])
+  
+  // const config = {
+  //   headers: { Authorization: `Bearer ${accessToken}`}
+  // };
+  // const bodyParameters = {
+  //   key: "value"
+  // };
+  // useEffect(()=> {
+  //   const fetchUserPrograms = async (accessToken)=>{
+  //       try{
+  //           const res = await axios.get('http://localhost:3000/programs',
+  //             bodyParameters,
+  //             config
+  //           )
+  //           setPrograms(res.data.message)
+  //           console.log(res)
+  //       }catch(err){
+  //           console.log(err)
+  //       }
+  //   }
+
+
+    // const fetchUserPrograms = async (accessToken)=>{
+    //   try{
+    //       const res = fetch('http://localhost:3000/programs', {
+    //         method: 'GET',
+    //         headers: {
+    //           Authorization: `Bearer ${accessToken}`,
+    //       },
+    //     }).then((res) => setPrograms(res.data.message))
+    //       console.log(res)
+    //   }catch(err){
+    //       console.log(err)
+    //   }
     // }
-
-
-    const fetchUserPrograms = async (accessToken)=>{
-      try{
-          const res = fetch('http://localhost:3000/programs', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-          },
-        }).then((res) => setPrograms(res.data.message))
-          console.log(res)
-      }catch(err){
-          console.log(err)
-      }
-    }
 
     // async function whoAmI(accessToken) {
     //   return fetch('http://localhost:3000/api/whoami', {
@@ -41,14 +84,17 @@ const Account = () => {
     // }
 
 
-    fetchUserPrograms()
-  },[])
+  //   fetchUserPrograms()
+  // },[])
     return (
     <div>
+      
       <h1>Profile</h1>
       <img src={icon} alt="profile_icon" />
       <p>Username</p>
       <p className='goals_title'>My goals</p>
+      <p>{serverResponse}</p>
+      <p>{JSON.stringify(programs)}</p>
       <div className='info'>
         <div className='day_choice'>
           <div className='day_icon'></div>
@@ -85,5 +131,6 @@ const Account = () => {
   </div>
   )
 }
+})
 
 export default Account

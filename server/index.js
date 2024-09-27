@@ -25,6 +25,10 @@ app.get("/api/whoami", requireUser, (req, res) => {
     res.status(200).json({message: `Hello user with ID + ${req.user.userId}`});
 });
 
+app.get("/testrecupid", requireUser, (req, res) => {
+    res.status(200).json(`${req.user.userId}`)
+})
+
 const sequelize = new Sequelize({
     dialect: PostgresDialect,
     database: process.env.POSTGRES_DB,
@@ -41,9 +45,9 @@ try {
     console.log("Not connected");
 }
 
-const programs = await sequelize.query('SELECT * FROM Program', {
-  type: QueryTypes.SELECT,
-});
+// const programs = await sequelize.query('SELECT * FROM Program', {
+//   type: QueryTypes.SELECT,
+// });
 
 // console.log("Programs: ", programs);
 
@@ -56,12 +60,12 @@ app.get('/test', (req, res, next) => {
     }
 });
 
-app.get("/programs", async (req, res, next)=> {
+app.get("/programs", requireUser, async (req, res, next)=> {
     const prog = await sequelize.query("SELECT * FROM Program", {
         type: QueryTypes.SELECT,
       });
     try {
-        res.status(200).json({message: prog});
+        res.status(200).json(prog);
     } catch(err) {
         next(err);
     }

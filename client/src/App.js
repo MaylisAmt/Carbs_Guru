@@ -56,6 +56,9 @@ const App = withAuthInfo((props) => {
               <li>
               <Link to="/signin">Sign in</Link>
               </li>
+              <li>
+              <Link to="/account">Account</Link>
+              </li>
             </ul>
           </nav>
 
