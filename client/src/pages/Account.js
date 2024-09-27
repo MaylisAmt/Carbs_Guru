@@ -1,20 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+//import axios from 'axios'
 import icon from '../assets/icon.png'
 import './Account.css';
 
 const Account = () => {
   const [programs, setPrograms]=useState([ ])
   useEffect(()=> {
-    const fetchUserPrograms = async ()=>{
-        try{
-            const res = await axios.get('http://localhost:3000/programs')
-            setPrograms(res.data.message)
-            console.log(res)
-        }catch(err){
-            console.log(err)
-        }
+    // const fetchUserPrograms = async ()=>{
+    //     try{
+    //         const res = await axios.get('http://localhost:3000/programs')
+    //         setPrograms(res.data.message)
+    //         console.log(res)
+    //     }catch(err){
+    //         console.log(err)
+    //     }
+    // }
+
+
+    const fetchUserPrograms = async (accessToken)=>{
+      try{
+          const res = fetch('http://localhost:3000/programs', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+          },
+        }).then((res) => setPrograms(res.data.message))
+          console.log(res)
+      }catch(err){
+          console.log(err)
+      }
     }
+
+    // async function whoAmI(accessToken) {
+    //   return fetch('http://localhost:3000/api/whoami', {
+    //       method: 'GET',
+    //       headers: {
+    //           Authorization: `Bearer ${accessToken}`,
+    //       },
+    //   }).then((res) => res.json())
+    // }
+
+
     fetchUserPrograms()
   },[])
     return (

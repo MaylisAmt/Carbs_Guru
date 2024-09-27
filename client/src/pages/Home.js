@@ -8,7 +8,7 @@ const Home = () => {
     <div>
         <Header />
         <main>
-            <h2>Welcome to the Home Page</h2>
+            <h2>Welcome to the Home Pazertyuiage</h2>
             <p>This is the home page of our application.</p>
         </main>
         <Footer />
