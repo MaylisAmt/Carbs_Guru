@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+//import axios from 'axios'
 import icon from '../assets/icon.png'
 import './Account.css';
 import { withAuthInfo } from '@propelauth/react';
@@ -87,7 +87,7 @@ const Account = withAuthInfo((props) => {
   //   fetchUserPrograms()
   // },[])
     return (
-    <div>
+    <div className='content'>
       
       <h1>Profile</h1>
       <img src={icon} alt="profile_icon" />
@@ -105,13 +105,21 @@ const Account = withAuthInfo((props) => {
         </div>
         <div className='prog_inputs'>
           <div className='meal1'>
-            <p className='repas1'>Ici on prendra le nom du repas depuis la db</p>
+            <p className='repas1'>db meal name</p>
             <input type='number' className='protein_input'></input>
             <input type='number' className='carbs_input'></input>
             <input type='number' className='fat_input'></input>
-            <p>grammes</p>
+            <p>g</p>
           </div>
-          <div className='meal2'></div>
+          <hr/>
+          <div className='meal2'>
+            <p className='repas2'>db meal name</p>
+            <input type='number' className='protein_input'></input>
+            <input type='number' className='carbs_input'></input>
+            <input type='number' className='fat_input'></input>
+            <p>g</p>
+          </div>
+          <hr/>
           <div className='meal3'></div>
           <div className='meal4'></div>
           <div className='meal5'></div>
