@@ -41,7 +41,19 @@ services:
   server:
     build:
       context: ./server
-      # target: builder
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: npm run dev
+    develop:
+      watch:
+        - action: sync
+          path: ./server
+          target: /src/server
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./server/package.json
     env_file:
       - ./.env
     environment:

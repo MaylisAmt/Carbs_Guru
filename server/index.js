@@ -50,7 +50,7 @@ const programs = await sequelize.query('SELECT * FROM Program', {
 //test api with error handling
 app.get('/test', (req, res, next) => {
     try {
-        res.status(200).json({message: 'Bravo!'});
+        res.status(200).json({message: 'Page de test backend'});
     } catch(err) {
         next(err);
     }
