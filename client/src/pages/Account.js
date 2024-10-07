@@ -22,6 +22,15 @@ async function getPrograms(accessToken) {
   }).then((res) => res.json())
 }
 
+async function getNewuser(accessToken) {
+  return fetch('http://localhost:3000/newuser/webhook',{
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      },
+  }).then((res) => res.json())
+}
+
 const Account = withAuthInfo((props) => {
 
   const [serverResponse, setServerResponse] = useState(undefined)
