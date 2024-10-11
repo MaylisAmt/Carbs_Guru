@@ -316,3 +316,28 @@ app.post('/signup', async (req, res) => {
           res.status(500).json({ message: 'Error creating goal', error: error.message });
         }
       });
+
+      //Retrive all goals corresponding to the authenticated user
+      app.get('/goals', authenticateToken, async (req, res) => {
+        try {
+          const userId = req.user.id; // Get the user ID from the authenticated token
+      
+          // Find all goals for this user
+          const goals = await Goal.findAll({
+            where: { userId },
+            order: [['createdAt', 'DESC']] // Optional: Order by creation date, newest first
+          });
+      
+          if (goals.length === 0) {
+            return res.status(404).json({ message: 'No goals found for this user' });
+          }
+      
+          res.json({
+            message: 'Goals retrieved successfully',
+            goals: goals
+          });
+        } catch (error) {
+          console.error('Error retrieving goals:', error);
+          res.status(500).json({ message: 'Error retrieving goals', error: error.message });
+        }
+      });
