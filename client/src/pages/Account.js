@@ -1,50 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 //import axios from 'axios'
 import icon from '../assets/icon.png'
 import './Account.css';
-import { withAuthInfo } from '@propelauth/react';
+//import { withAuthInfo } from '@propelauth/react';
 
-async function testrecupid(accessToken) {
-  return fetch('http://localhost:3000/testrecupid', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-  }).then((res) => res.json())
-}
+// async function testrecupid(accessToken) {
+//   return fetch('http://localhost:3000/testrecupid', {
+//       method: 'GET',
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//   }).then((res) => res.json())
+// }
 
-async function getPrograms(accessToken) {
-  return fetch('http://localhost:3000/programs',{
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      },
-  }).then((res) => res.json())
-}
+// async function getPrograms(accessToken) {
+//   return fetch('http://localhost:3000/goals',{
+//     method: 'GET',
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       },
+//   }).then((res) => res.json())
+// }
 
-async function getNewuser(accessToken) {
-  return fetch('http://localhost:3000/newuser/webhook',{
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      },
-  }).then((res) => res.json())
-}
+// async function getNewuser(accessToken) {
+//   return fetch('http://localhost:3000/newuser/webhook',{
+//     method: 'GET',
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       },
+//   }).then((res) => res.json())
+// }
 
-const Account = withAuthInfo((props) => {
+const Account = () => {
 
-  const [serverResponse, setServerResponse] = useState(undefined)
-  const [programs, setPrograms]=useState([])
-  
-    useEffect(()=> {
-      testrecupid(props.accessToken).then(setServerResponse)
-    }, [props.accessToken])
-
-    useEffect(()=> {
-      getPrograms(props.accessToken).then(setPrograms)
-    }, [props.accessToken])
-
-    if (props.isLoggedIn) {
 
   // const [programs, setPrograms]=useState([ ])
   
@@ -102,8 +90,7 @@ const Account = withAuthInfo((props) => {
       <img src={icon} alt="profile_icon" />
       <p>Username</p>
       <p className='goals_title'>My goals</p>
-      <p>{serverResponse}</p>
-      <p>{JSON.stringify(programs)}</p>
+      <p></p>
       <div className='info'>
         <div className='day_choice'>
           <div className='day_icon'></div>
@@ -137,17 +124,9 @@ const Account = withAuthInfo((props) => {
           <button type="submit" class="save-button">Save</button>
         </div>
       </div>
-  <div className='programs'> 
-{programs.map(program => (
-  <div className='program'> 
-  <h2> {program.name} </h2>
-  <p> {program.description}</p>
-  <p> {program.goals}</p>
-    </div>
-))} </div>
   </div>
   )
 }
-})
+
 
 export default Account
