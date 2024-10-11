@@ -152,10 +152,14 @@ import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env'});
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 // ES modules configuration
 
 const app = express();
+app.use(express.json());
 const port = process.env.PORT || 3000;
+
+console.log("process env", process.env)
 // Database configuration
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -195,6 +199,21 @@ initializeApp();
 // Export sequelize instance for use in model files
 export default sequelize;
 
+//Authenticate token
+export const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Access denied. No token provided.' });
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next();
+    } catch (error) {
+      res.status(400).json({ message: 'Invalid token.' });
+    }
+  };
 
 //Create User
 const User = sequelize.define('User', {
@@ -230,3 +249,108 @@ const User = sequelize.define('User', {
   User.prototype.validatePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
   };
+
+app.get('/test', (req, res, next) => {
+    try {
+        res.status(200).json({message: 'Page de test backend'});
+    } catch(err) {
+        next(err);
+    }
+});
+
+//Route signup
+app.post('/signup', async (req, res) => {
+    try {
+        const { email, password, name } = req.body;
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
+        }
+        // Create new user
+        const user = await User.create({
+        email,
+        password,
+        name
+        });
+        // Generate JWT token
+        console.log("JWT_SECRET", process.env.JWT_SECRET)
+        const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+        );
+        res.status(201).json({
+        message: 'User created successfully',
+        token,
+        user: {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        }
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating user', error: error.message });
+    }
+    });
+
+    app.post('/signin', async (req, res) => {
+        try {
+          const { email, password } = req.body;
+          // Find user
+          const user = await User.findOne({ where: { email } });
+          if (!user) {
+            return res.status(400).json({ message: 'User not found' });
+          }
+          // Validate password
+          const isValidPassword = await user.validatePassword(password);
+          if (!isValidPassword) {
+            return res.status(400).json({ message: 'Invalid password' });
+          }
+          // Generate JWT token
+          const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' }
+          );
+          res.json({
+            message: 'Login successful',
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              name: user.name
+            }
+          });
+        } catch (error) {
+          res.status(500).json({ message: 'Error logging in', error: error.message });
+        }
+      });
+      // Protected Profile Route
+      app.get('/profile', authenticateToken, async (req, res) => {
+        try {
+          const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+          });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          res.json(user);
+        } catch (error) {
+          res.status(500).json({ message: 'Error fetching profile', error: error.message });
+        }
+      });
+
+      app.get('/profile', authenticateToken, async (req, res) => {
+        try {
+          const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+          });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          res.json(user);
+        } catch (error) {
+          res.status(500).json({ message: 'Error fetching profile', error: error.message });
+        }
+      });
