@@ -240,6 +240,38 @@ app.post('/signup', async (req, res) => {
         }
       });
 
+      //Change username
+      app.put('/change-username', authenticateToken, async (req, res) => {
+        try {
+          const { newUsername } = req.body;
+          const userId = req.user.id; // Assuming authenticateToken adds user info to req.user
+      
+          if (!newUsername) {
+            return res.status(400).json({ message: 'New username is required' });
+          }
+      
+          // Find the user and update their name
+          const user = await User.findByPk(userId);
+      
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+      
+          user.name = newUsername;
+          await user.save();
+      
+          res.json({
+            message: 'Username updated successfully',
+            user: {
+              id: user.id,
+              email: user.email,
+              name: user.name
+            }
+          });
+        } catch (error) {
+          res.status(500).json({ message: 'Error updating username', error: error.message });
+        }
+      });
 
 
     app.post('/goals', authenticateToken, async (req, res) => {
