@@ -87,7 +87,7 @@ const App = withAuthInfo((props) => {
       <div>
           <p>You are not logged in</p>
           <button onClick={() => redirectToLoginPage()}>Login</button>
-          <button onClick={() => }></button>
+          {/* <button onClick={() => }></button> */}
           <button onClick={() => redirectToSignupPage()}>Signup</button>
 
           <div>

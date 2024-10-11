@@ -159,7 +159,6 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-console.log("process env", process.env)
 // Database configuration
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -250,6 +249,56 @@ const User = sequelize.define('User', {
     return await bcrypt.compare(password, this.password);
   };
 
+
+//Create goal
+const Goal = sequelize.define('Goal', {
+    goalId: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    mealName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    carbsTrain: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    carbsRest: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    proteinsTrain: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    proteinsRest: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    fatsTrain: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    fatsRest: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    }
+  });
+  
+  // Define the relationship
+  User.hasMany(Goal);
+  Goal.belongsTo(User);
+
 app.get('/test', (req, res, next) => {
     try {
         res.status(200).json({message: 'Page de test backend'});
@@ -274,7 +323,6 @@ app.post('/signup', async (req, res) => {
         name
         });
         // Generate JWT token
-        console.log("JWT_SECRET", process.env.JWT_SECRET)
         const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
@@ -333,7 +381,7 @@ app.post('/signup', async (req, res) => {
             attributes: { exclude: ['password'] }
           });
           if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Profile User not found' });
           }
           res.json(user);
         } catch (error) {
@@ -341,16 +389,46 @@ app.post('/signup', async (req, res) => {
         }
       });
 
-      app.get('/profile', authenticateToken, async (req, res) => {
+
+    app.post('/goals', authenticateToken, async (req, res) => {
         try {
-          const user = await User.findByPk(req.user.id, {
-            attributes: { exclude: ['password'] }
-          });
+          const {
+            mealName,
+            carbsTrain,
+            carbsRest,
+            proteinsTrain,
+            proteinsRest,
+            fatsTrain,
+            fatsRest
+          } = req.body;
+      
+          // The user ID is now available in req.user, as set by authenticateToken
+          const userId = req.user.id; // Assuming the JWT payload includes userId
+      
+          // Check if the user exists
+          const user = await User.findByPk(userId);
           if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Goals User not found' });
           }
-          res.json(user);
+      
+          // Create the goal
+          const newGoal = await Goal.create({
+            userId,
+            mealName,
+            carbsTrain,
+            carbsRest,
+            proteinsTrain,
+            proteinsRest,
+            fatsTrain,
+            fatsRest
+          });
+      
+          res.status(201).json({
+            message: 'Goal created successfully',
+            goal: newGoal
+          });
         } catch (error) {
-          res.status(500).json({ message: 'Error fetching profile', error: error.message });
+          console.error('Error creating goal:', error);
+          res.status(500).json({ message: 'Error creating goal', error: error.message });
         }
       });
