@@ -1,6 +1,6 @@
 // Importing modules
 import express from "express";
-import db from "../Models/index.js";
+//import db from "../Models/index.js";
 
 // Assigning db.users to User variable
 const User = db.users;

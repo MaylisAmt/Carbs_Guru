@@ -1,20 +1,15 @@
 //importing modules
-import { Sequelize } from '@sequelize/core';
-//import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
+import {PostgresDialect} from '@sequelize/postgres';
 import dotenv from 'dotenv';
 dotenv.config({ path: '../../.env'})
-import { PostgresDialect } from '@sequelize/postgres';
-import userModel from './userModel.js';
 
 
 
-const sequelize = new Sequelize({
-    dialect: PostgresDialect,
-    database: process.env.POSTGRES_DB,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    host: 'db',
-    port: 5432
+console.log('process.env.POSTGRES_USER', process.env.POSTGRES_USER);
+
+const sequelize = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
+    dialect: 'postgres',
   });
 
 //checking if connection is done
@@ -25,13 +20,34 @@ try {
     console.log("Not connected");
 }
 
-    const db = {}
-    db.Sequelize = Sequelize
-    db.sequelize = sequelize
-    db.User = userModel(sequelize);  // Passe l'instance sequelize à userModel
+export const db = {}
+db.Sequelize = Sequelize
+db.sequelize = sequelize
 
-// Connecting to model
-// db.users = userModel(sequelize, DataTypes);
+// export const User = sequelize.define("user", {
+//     username: {
+//         type: DataTypes.STRING,
+//         allowNull: false,
+//     },
+//     email: {
+//         type: DataTypes.STRING,
+//         unique: true,
+//         isEmail: true, // checks for email format
+//         allowNull: false,
+//     },
+//     password: {
+//         type: DataTypes.STRING,
+//         allowNull: false,
+//     },
+//     avatar: {
+//         type: DataTypes.STRING,
+//         allowNull: true,
+//         unique: false,
+//     },
+// }, {tableName: "users", timestamps: true, modelName: 'user'});
 
-// Exporting the module
-export default db;
+// // Connecting to model
+// // db.users = userModel(sequelize, DataTypes);
+
+// // Exporting the module
+// export default db;

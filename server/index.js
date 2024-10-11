@@ -1,48 +1,48 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '../.env'})
-import express from 'express';
-//import sequelize from 'sequelize';
-import cors from 'cors';
-import db from './Models/index.js';
-import router from './Routes/userRoutes.js';
-import cookieParser from 'cookie-parser';
+// import dotenv from 'dotenv';
+// dotenv.config({ path: '../.env'})
+// import express from 'express';
+// //import sequelize from 'sequelize';
+// import cors from 'cors';
+// import {db} from './Models/index.js';
+// // import router from './Routes/userRoutes.js';
+// import cookieParser from 'cookie-parser';
 // import { Sequelize } from '@sequelize/core';
 // import { PostgresDialect } from '@sequelize/postgres';
 // import { QueryTypes } from 'sequelize';
 // import { initAuth } from '@propelauth/express'
 // import User from './sequelize/models/User'
 
-const app = express();
-//use json
-app.use(express.json());
-app.use(cors());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
+// const app = express();
+// //use json
+// app.use(express.json());
+// app.use(cors());
+// app.use(express.urlencoded({extended: false}));
+// app.use(cookieParser());
 
 
-const PORT = process.env.PORT || 3000;  // Utilisation d'une variable d'environnement pour le port
-app.listen(PORT, () => {
-    console.log("Serveur a démarré sur le port", PORT);
-});
+// const PORT = process.env.PORT || 3000;  // Utilisation d'une variable d'environnement pour le port
+// app.listen(PORT, () => {
+//     console.log("Serveur a démarré sur le port", PORT);
+// });
 
-db.sequelize.sync({ force: true }).then(() => {
-    try {
-        console.log("db has been re sync")
-    } catch(error) {
-        console.error("db NOT sync :" + error)
-    }
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//     try {
+//         console.log("db has been re sync")
+//     } catch(error) {
+//         console.error("db NOT sync :" + error)
+//     }
+// });
 
 //routes for the user API
-app.use('/api/users', router)
+// app.use('/api/users', router)
 
-app.get('/test', (req, res, next) => {
-    try {
-        res.status(200).json({message: 'Page de test backend'});
-    } catch(err) {
-        next(err);
-    }
-});
+// app.get('/test', (req, res, next) => {
+//     try {
+//         res.status(200).json({message: 'Page de test backend'});
+//     } catch(err) {
+//         next(err);
+//     }
+// });
 
 // const {
 //     requireUser,
@@ -147,3 +147,86 @@ app.get('/test', (req, res, next) => {
 // })
 
 
+import express from 'express';
+import { Sequelize, DataTypes } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env'});
+import bcrypt from 'bcryptjs';
+// ES modules configuration
+
+const app = express();
+const port = process.env.PORT || 3000;
+// Database configuration
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: 'db',
+  port: 5432,
+  username: process.env.POSTGRES_USER || 'postgres',
+  password: process.env.POSTGRES_PASSWORD || 'your_password',
+  database: process.env.POSTGRES_DB || 'your_database',
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+  logging: false // Set to console.log to see SQL queries
+});
+// Test the connection
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+// Initialize database and start server
+async function initializeApp() {
+  await testConnection();
+  // Sync all models
+  // Note: In production, you might want to use {force: false}
+  await sequelize.sync({ force: true });
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+initializeApp();
+// Export sequelize instance for use in model files
+export default sequelize;
+
+
+//Create User
+const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }, {
+    hooks: {
+      beforeCreate: async (user) => {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    }
+  });
+  User.prototype.validatePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);
+  };
