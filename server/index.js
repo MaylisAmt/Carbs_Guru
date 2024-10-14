@@ -341,3 +341,45 @@ app.post('/signup', async (req, res) => {
           res.status(500).json({ message: 'Error retrieving goals', error: error.message });
         }
       });
+
+      app.put('/goals/:goalId', authenticateToken, async (req, res) => {
+        try {
+          const { goalId } = req.params;
+          const userId = req.user.id;
+          const {
+            mealName,
+            carbsTrain,
+            carbsRest,
+            proteinsTrain,
+            proteinsRest,
+            fatsTrain,
+            fatsRest
+          } = req.body;
+      
+          // Find the goal
+          const goal = await Goal.findOne({ where: { goalId: goalId, userId } });
+      
+          if (!goal) {
+            return res.status(404).json({ message: 'Goal not found or does not belong to the user' });
+          }
+      
+          // Update the goal
+          await goal.update({
+            mealName,
+            carbsTrain,
+            carbsRest,
+            proteinsTrain,
+            proteinsRest,
+            fatsTrain,
+            fatsRest
+          });
+      
+          res.json({
+            message: 'Goal updated successfully',
+            goal: goal
+          });
+        } catch (error) {
+          console.error('Error updating goal:', error);
+          res.status(500).json({ message: 'Error updating goal', error: error.message });
+        }
+      });
