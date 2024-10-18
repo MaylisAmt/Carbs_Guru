@@ -244,6 +244,10 @@ app.post('/signup', async (req, res) => {
         }
       });
 
+      app.post('/signout', authenticateToken, (req, res) => {
+        res.json({ message: 'Successfully signed out' });
+      });
+
       //Change username
       app.put('/change-username', authenticateToken, async (req, res) => {
         try {

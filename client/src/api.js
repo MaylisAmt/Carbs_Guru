@@ -31,7 +31,7 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // If the server responds with a 401 status, remove the token and redirect to login
       removeToken();
-      window.location = '/login';
+      window.location = '/signin';
     }
     return Promise.reject(error);
   }
@@ -52,6 +52,18 @@ export const signin = async (credentials) => {
     return response.data;
   } catch (error) {
     throw error.response.data;
+  }
+};
+
+export const signout = async () => {
+  try {
+    const response = await api.post('/signout');
+    removeToken(); // Remove the token from storage
+    return response.data;
+  } catch (error) {
+    // Still remove the token even if the API call fails
+    removeToken();
+    throw error.response?.data || error;
   }
 };
 
