@@ -4,11 +4,13 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env'});
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 // ES modules configuration
 
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
+app.use(cors())
 
 // Database configuration
 const sequelize = new Sequelize({
@@ -40,7 +42,7 @@ async function initializeApp() {
   await testConnection();
   // Sync all models
   // Note: In production, you might want to use {force: false}
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
@@ -89,6 +91,7 @@ const User = sequelize.define('User', {
       allowNull: false
     }
   }, {
+    tableName: 'users',
     hooks: {
       beforeCreate: async (user) => {
         const salt = await bcrypt.genSalt(10);
@@ -143,7 +146,8 @@ const Goal = sequelize.define('Goal', {
     fatsRest: {
       type: DataTypes.FLOAT,
       allowNull: false
-    }
+    },
+    tableName: "goals"
   });
   
   // Define the relationship
