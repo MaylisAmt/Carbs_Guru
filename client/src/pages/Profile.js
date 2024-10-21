@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getProfile } from '../api.js';
 import { useNavigate } from 'react-router-dom';
 import { signout } from '../api.js';
+import Goals from './Goals.js';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Profile = () => {
       <p>Name: {profile.name}</p>
       <p>Email: {profile.email}</p>
       {/* Display other profile information */}
+      <Goals />
       <button onClick={handleSignout}>Sign Out</button>
     </div>
   );

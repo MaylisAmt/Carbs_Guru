@@ -7,8 +7,7 @@ import About from './pages/About.js';
 import Contact from './pages/Contact.js';
 import Signup from './pages/Signup.js';
 import Signin from './pages/Signin.js';
-import Account from './pages/Account.js';
-import SignupForm from './pages/ClaudeSignup.js';
+import Goals from './pages/Goals.js';
 import Profile from './pages/Profile.js';
 
 // async function whoAmI(accessToken) {
@@ -43,12 +42,6 @@ const App = () => {
               <Link to="/signin">Sign in</Link>
               </li>
               <li>
-              <Link to="/account">Account</Link>
-              </li>
-              <li>
-              <Link to="/claudesignup">Claude connect</Link>
-              </li>
-              <li>
               <Link to="/profile">Claude profile</Link>
               </li>
             </ul>
@@ -60,8 +53,7 @@ const App = () => {
             <Route path="/contact" element={<Contact/>} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/signin" element={<Signin/>} />
-            <Route path="/account" element={<Account/>} />
-            <Route path="/claudesignup" element={<SignupForm/>} />
+            <Route path="/goals" element={<Goals/>} />
             <Route path="/profile" element={<Profile/>} />
           </Routes>
         </Router>

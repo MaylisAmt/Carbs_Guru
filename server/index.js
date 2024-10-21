@@ -42,7 +42,7 @@ async function initializeApp() {
   await testConnection();
   // Sync all models
   // Note: In production, you might want to use {force: false}
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
@@ -115,7 +115,7 @@ const Goal = sequelize.define('Goal', {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'Users',
+        model: User, //Use the model object as the foreign key
         key: 'id'
       }
     },
@@ -146,12 +146,15 @@ const Goal = sequelize.define('Goal', {
     fatsRest: {
       type: DataTypes.FLOAT,
       allowNull: false
-    },
-    tableName: "goals"
+    }
+  }, {
+    tableName: 'goals'
   });
   
   // Define the relationship
-  User.hasMany(Goal);
+  User.hasMany(Goal, {
+    foreignKey: "userId",
+  });
   Goal.belongsTo(User);
 
 app.get('/test', (req, res, next) => {
@@ -284,6 +287,12 @@ app.post('/signup', async (req, res) => {
 
     app.post('/goals', authenticateToken, async (req, res) => {
         try {
+
+          console.log('User from token:', req.user); // Debug log to see the user object
+          console.log('User ID type:', typeof req.user.id); // Debug log to see the ID type
+          console.log('User ID value:', req.user.id); // Debug log to see the actual ID
+
+
           const {
             mealName,
             carbsTrain,
@@ -299,6 +308,7 @@ app.post('/signup', async (req, res) => {
       
           // Check if the user exists
           const user = await User.findByPk(userId);
+          console.log('Found user:', user ? user.id : 'Not found'); // Debug log
           if (!user) {
             return res.status(404).json({ message: 'Goals User not found' });
           }

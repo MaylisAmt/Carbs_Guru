@@ -75,3 +75,13 @@ export const getProfile = async () => {
     throw error.response.data;
   }
 };
+
+export const setGoal = async (goalData) => {
+  console.log("goal data: ", goalData)
+  try {
+    const response = await api.post('/goals', goalData);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
