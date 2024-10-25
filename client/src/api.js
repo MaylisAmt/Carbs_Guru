@@ -109,12 +109,12 @@ export const editGoal = async (goalId, goalData) => {
   }
 }
 
-// export const deleteGoal = async (goalId) => {
-//   try {
-//     const response = await api.delete(`/goals/${goalId}`);
-//     return response.data
-//   }
-//   catch (error) {
-//     throw error.response?.data || error;
-//   }
-// };
+export const deleteGoal = async (goalId) => {
+  try {
+    const response = await api.delete(`/goals/${goalId}`);
+    return response.data
+  }
+  catch (error) {
+    throw error.response?.data || error;
+  }
+};

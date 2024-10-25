@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, getGoals, signout } from '../api.js';
+import { getProfile, getGoals, signout, deleteGoal } from '../api.js';
 import { useNavigate } from 'react-router-dom';
 import icon from '../assets/icon.png'
 //import EditGoals from '../components/EditGoals.js';
@@ -93,6 +93,19 @@ const Profile = () => {
     // }
   };
 
+  const handleDelete = async (goalId) => {
+    if (window.confirm('Are you sure you want to delete this goal?')) {
+      try {
+        await deleteGoal(goalId);
+        const response = await getGoals(); //Refresh the goals list
+        setGoals(response.goals);
+      }
+      catch (error) {
+        console.error('Error deleting goal: ', error);
+      }
+    }
+  }
+
   const handleAddGoal = () => {
     navigate('/add-goal');
   };
@@ -150,6 +163,7 @@ const Profile = () => {
                 <li key={goal.goalId} className="border p-4 rounded">
                   <h3 className="font-bold mb-2">{goal.mealName}</h3>
                   <button onClick={() => handleEdit(goal.goalId)}>Edit</button>
+                  <button onClick={() => handleDelete(goal.goalId)}>Delete</button>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="font-semibold">Training Day:</p>

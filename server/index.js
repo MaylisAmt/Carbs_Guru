@@ -403,25 +403,25 @@ app.post('/signup', async (req, res) => {
       });
 
 
-      // app.delete('/goals/:goalId', authenticateToken, async (req, res) => {
-      //   try {
-      //     const { goalId } = req.params;
-      //     const userId = req.user.id;
+      app.delete('/goals/:goalId', authenticateToken, async (req, res) => {
+        try {
+          const { goalId } = req.params;
+          const userId = req.user.id;
 
-      //     const goal = await Goal.findOne({ where: { goalId: goalId, userId } });
+          const goal = await Goal.findOne({ where: { goalId: goalId, userId } });
 
-      //   if (!goal) {
-      //     return res.status(404).json({ message: 'Goal not found or does not belong to the user' });
-      //   }
+        if (!goal) {
+          return res.status(404).json({ message: 'Goal not found or does not belong to the user' });
+        }
 
-      //   //Delete the goal
-      //   await goal.destroy();
+        //Delete the goal
+        await goal.destroy();
 
-      //   res.json({ message: 'Goal deleted successfully', goalId: goalId });
+        res.json({ message: 'Goal deleted successfully', goalId: goalId });
 
-      // } catch (error) {
-      //   console.error('Error deleting goal: ', error);
-      //   res.status(500).json({ message: "Error deleting goal", error: error.message });
-      // }
+      } catch (error) {
+        console.error('Error deleting goal: ', error);
+        res.status(500).json({ message: "Error deleting goal", error: error.message });
+      }
 
-      // });
+      });
