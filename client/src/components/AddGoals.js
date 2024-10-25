@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { setGoal } from '../api.js';
 import { useNavigate } from 'react-router-dom';
-import icon from '../assets/icon.png'
-import './Goals.css';
+import './AddGoals.css';
 
 
-const Goals = () => {
+const AddGoals = () => {
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -43,23 +42,9 @@ const Goals = () => {
 
     return (
     <div className='content'>
-      
-      <h1>Profile</h1>
-      <img src={icon} alt="profile_icon" />
-      <p>Username</p>
-      <p className='goals_title'>My goals</p>
-      <p></p>
       <div className='info'>
-        <div className='day_choice'>
-          <div className='day_icon'></div>
-          {/* <div className='toggle'>
-            <input type="checkbox" id="switch" class="switch" />
-            <label for="switch" class="slider"></label>
-          </div> */}
-        </div>
         <form className='prog_inputs' onSubmit={handleSubmit}>
           <div className='meal1'>
-            {/* <input type='text' name='mealName' value={formData.mealName} onChange={handleChange} className='repas1'></input> */}
             <select name='mealName' value={formData.mealName} onChange={handleChange} className='repas1'>
               <option value=''>Select meal</option>
               <option value='breakfast'>Breakfast</option>
@@ -75,18 +60,6 @@ const Goals = () => {
             <input type='float' name='fatsRest' value={formData.fatsRest} onChange={handleChange} className='fat_input'></input>
             <p>g</p>
           </div>
-          <hr/>
-          <div className='meal2'>
-            <p className='repas2'>db meal name</p>
-            <input type='number' className='protein_input'></input>
-            <input type='number' className='carbs_input'></input>
-            <input type='number' className='fat_input'></input>
-            <p>g</p>
-          </div>
-          <hr/>
-          <div className='meal3'></div>
-          <div className='meal4'></div>
-          <div className='meal5'></div>
           <button className='save_button' type="submit">Save</button>
         </form>
       </div>
@@ -105,4 +78,4 @@ const Goals = () => {
 }
 
 
-export default Goals
+export default AddGoals

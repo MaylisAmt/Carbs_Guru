@@ -7,8 +7,9 @@ import About from './pages/About.js';
 import Contact from './pages/Contact.js';
 import Signup from './pages/Signup.js';
 import Signin from './pages/Signin.js';
-import Goals from './pages/Goals.js';
 import Profile from './pages/Profile.js';
+import EditGoals from './components/EditGoals.js';
+import AddGoals from './components/AddGoals.js';
 
 // async function whoAmI(accessToken) {
 //   return fetch('http://localhost:3000/profile', {
@@ -53,7 +54,8 @@ const App = () => {
             <Route path="/contact" element={<Contact/>} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/signin" element={<Signin/>} />
-            <Route path="/goals" element={<Goals/>} />
+            <Route path="/goals" element={<AddGoals/>} />
+            <Route path="/goals/:goalId" element={<EditGoals />} />
             <Route path="/profile" element={<Profile/>} />
           </Routes>
         </Router>

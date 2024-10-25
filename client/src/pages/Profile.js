@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getProfile, getGoals, signout } from '../api.js';
 import { useNavigate } from 'react-router-dom';
+import icon from '../assets/icon.png'
+//import EditGoals from '../components/EditGoals.js';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -84,6 +86,13 @@ const Profile = () => {
     };
   };
 
+  const handleEdit = (goalId) => {
+    // if (goalId) {
+      console.log('Editing goal: ', goalId);
+      navigate(`/goals/${goalId}`);
+    // }
+  };
+
   const handleAddGoal = () => {
     navigate('/add-goal');
   };
@@ -118,6 +127,7 @@ const Profile = () => {
         <div className="mb-6">
           <p className="mb-2">Name: {profile.name}</p>
           <p className="mb-4">Email: {profile.email}</p>
+          <img src={icon} alt="profile_icon" />
         </div>
       )}
 
@@ -136,9 +146,10 @@ const Profile = () => {
           <div>
             <h2 className="text-xl font-semibold mb-4">Your goals</h2>
             <ul className="space-y-6">
-              {goals.map(goal => (
+              {goals && goals.map((goal) => (
                 <li key={goal.goalId} className="border p-4 rounded">
                   <h3 className="font-bold mb-2">{goal.mealName}</h3>
+                  <button onClick={() => handleEdit(goal.goalId)}>Edit</button>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="font-semibold">Training Day:</p>

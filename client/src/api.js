@@ -79,12 +79,13 @@ export const getProfile = async () => {
 export const getGoals = async () => {
   try {
     const response = await api.get('/goals');
+    console.log("getGoals response.data: ", response.data);
     return response.data
   } catch (error) {
-    if (error.code === 'ERR_INSUFFICIENT_RESOURCES') {
-      console.error('Server resource limit reached');
-      throw new Error('Server is busy, please try again later');
-    }
+    // if (error.code === 'ERR_INSUFFICIENT_RESOURCES') {
+    //   console.error('Server resource limit reached');
+    //   throw new Error('Server is busy, please try again later');
+    // }
     throw error.response?.data || error;
   }
 }
@@ -98,3 +99,22 @@ export const setGoal = async (goalData) => {
     throw error.response.data;
   }
 }
+
+export const editGoal = async (goalId, goalData) => {
+  try {
+    const response = await api.put(`/goals/${goalId}`, goalData);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+// export const deleteGoal = async (goalId) => {
+//   try {
+//     const response = await api.delete(`/goals/${goalId}`);
+//     return response.data
+//   }
+//   catch (error) {
+//     throw error.response?.data || error;
+//   }
+// };
