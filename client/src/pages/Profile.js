@@ -107,7 +107,7 @@ const Profile = () => {
   }
 
   const handleAddGoal = () => {
-    navigate('/add-goal');
+    navigate('/goals');
   };
 
   if (isLoading) {
