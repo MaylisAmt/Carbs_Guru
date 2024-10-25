@@ -79,6 +79,11 @@ const EditGoals = () => {
             {/* Display meal name instead of select */}
             <div className='repas1'>
               {formData.mealName.charAt(0).toUpperCase() + formData.mealName.slice(1)}
+              <input 
+                    type="hidden"
+                    name="mealName"
+                    value={formData.mealName}
+                />
             </div>
             
             <input 
