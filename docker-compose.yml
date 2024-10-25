@@ -41,6 +41,19 @@ services:
   server:
     build:
       context: ./server
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: npm run dev
+    develop:
+      watch:
+        - action: sync
+          path: ./server
+          target: /src/server
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./server/package.json
     env_file:
       - ./.env
     environment:
@@ -54,6 +67,20 @@ services:
   client:
     build:
       context: ./client
+    command: npm start
+    volumes:
+      - ./client:/app
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /src/client
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./client/package.json
+    env_file:
+      - ./.env
     environment:
       NODE_ENV: production
     ports:
