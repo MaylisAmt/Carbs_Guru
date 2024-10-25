@@ -76,6 +76,19 @@ export const getProfile = async () => {
   }
 };
 
+export const getGoals = async () => {
+  try {
+    const response = await api.get('/goals');
+    return response.data
+  } catch (error) {
+    if (error.code === 'ERR_INSUFFICIENT_RESOURCES') {
+      console.error('Server resource limit reached');
+      throw new Error('Server is busy, please try again later');
+    }
+    throw error.response?.data || error;
+  }
+}
+
 export const setGoal = async (goalData) => {
   console.log("goal data: ", goalData)
   try {

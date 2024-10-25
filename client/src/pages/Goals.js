@@ -59,7 +59,14 @@ const Goals = () => {
         </div>
         <form className='prog_inputs' onSubmit={handleSubmit}>
           <div className='meal1'>
-            <input type='text' name='mealName' value={formData.mealName} onChange={handleChange} className='repas1'></input>
+            {/* <input type='text' name='mealName' value={formData.mealName} onChange={handleChange} className='repas1'></input> */}
+            <select name='mealName' value={formData.mealName} onChange={handleChange} className='repas1'>
+              <option value=''>Select meal</option>
+              <option value='breakfast'>Breakfast</option>
+              <option value='lunch'>Lunch</option>
+              <option value='snack'>Snack</option>
+              <option value='dinner'>Dinner</option>
+            </select>
             <input type='float' name='carbsTrain' value={formData.carbsTrain} onChange={handleChange} className='carbs_input'></input>
             <input type='float' name='proteinsTrain' value={formData.proteinsTrain} onChange={handleChange} className='proteins_input'></input>
             <input type='float' name='fatsTrain' value={formData.fatsTrain} onChange={handleChange} className='fat_input'></input>
