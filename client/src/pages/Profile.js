@@ -182,6 +182,7 @@ const Profile = () => {
                       </ul>
                     </div>
                   </div>
+                  <hr/>
                 </li>
               ))}
             </ul>
