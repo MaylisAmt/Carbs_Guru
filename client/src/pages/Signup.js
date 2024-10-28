@@ -273,6 +273,7 @@ import { signup } from '../api.js';
 import { setToken } from '../auth.js';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import './Signup.css';
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -316,7 +317,7 @@ const SignupForm = () => {
       <div className="logo">
         <img src={logo} alt="Carbs Guru Logo" className="logo" />
       </div>
-      <h2>Carbs Guru</h2>
+      {/* <h2>Carbs Guru</h2> */}
       <form onSubmit={handleSubmit}>
       <input
           type="text"
@@ -344,7 +345,7 @@ const SignupForm = () => {
         />
         <button type="submit">Sign up</button>
       </form>
-      <p>
+      <p className='signin-link'>
         <Link to="/signin">Log in here</Link>
       </p>
 

@@ -25,7 +25,7 @@ const App = () => {
     return (
       <div className="App">
         <Router>
-          <nav>
+          {/* <nav>
             <ul>
               <li>
                 <Link to="/">Home</Link>
@@ -46,7 +46,7 @@ const App = () => {
               <Link to="/profile">Claude profile</Link>
               </li>
             </ul>
-          </nav>
+          </nav> */}
 
           <Routes>
             <Route path="/" element={<Home/>} />
