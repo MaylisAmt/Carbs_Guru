@@ -166,7 +166,7 @@ const Profile = () => {
                   <button onClick={() => handleDelete(goal.goalId)}>Delete</button>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-semibold">Training Day:</p>
+                      <p className="font-semibold bg-red">Training Day:</p>
                       <ul className="ml-4">
                         <li>Carbs: {goal.carbsTrain}g</li>
                         <li>Proteins: {goal.proteinsTrain}g</li>

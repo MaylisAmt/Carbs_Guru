@@ -160,8 +160,7 @@ p a:hover {
 html, body {
   height: 100%;
   width: 100%;
-  margin: 0;
-  padding: 0;
+  /* background-color: red; */
   background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180));
   background-repeat: no-repeat;
 }
