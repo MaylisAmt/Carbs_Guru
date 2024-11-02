@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getProfile, getGoals, signout, deleteGoal } from '../api.js';
 import { useNavigate } from 'react-router-dom';
-import icon from '../assets/icon.png'
+import icon from '../assets/icon.png';
+import './Profile.css';
 //import EditGoals from '../components/EditGoals.js';
 
 const Profile = () => {
@@ -110,101 +111,125 @@ const Profile = () => {
     navigate('/goals');
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+//   
 
-  if (error && error !== 'No goals found for this user') {
-    return (
-      <div className="flex flex-col items-center gap-4 p-4">
-        <p className="text-red-600">Error: {error}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
+if (isLoading) {
   return (
-    <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
-      
-      {profile && (
-        <div className="mb-6">
-          <p className="mb-2">Name: {profile.name}</p>
-          <p className="mb-4">Email: {profile.email}</p>
-          <img src={icon} alt="profile_icon" />
-        </div>
-      )}
+    <div className="loading-container">
+      <p>Loading...</p>
+    </div>
+  );
+}
 
-      <div className="mb-6">
-        {(!goals || goals.length === 0) ? (
-          <div className="text-center">
-            <p className="mb-4">No goals yet.</p>
-            <button
-              onClick={handleAddGoal}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Add your first goal
-            </button>
-          </div>
-        ) : (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Your goals</h2>
-            <ul className="space-y-6">
-              {goals && goals.map((goal) => (
-                <li key={goal.goalId} className="border p-4 rounded">
-                  <h3 className="font-bold mb-2">{goal.mealName}</h3>
-                  <button onClick={() => handleEdit(goal.goalId)}>Edit</button>
-                  <button onClick={() => handleDelete(goal.goalId)}>Delete</button>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="font-semibold bg-red">Training Day:</p>
-                      <ul className="ml-4">
-                        <li>Carbs: {goal.carbsTrain}g</li>
-                        <li>Proteins: {goal.proteinsTrain}g</li>
-                        <li>Fats: {goal.fatsTrain}g</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="font-semibold">Rest Day:</p>
-                      <ul className="ml-4">
-                        <li>Carbs: {goal.carbsRest}g</li>
-                        <li>Proteins: {goal.proteinsRest}g</li>
-                        <li>Fats: {goal.fatsRest}g</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <hr/>
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={handleAddGoal}
-              className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Add another goal
-            </button>
-          </div>
-        )}
-      </div>
-
-      <button
-        onClick={handleSignout}
-        disabled={isSigningOut}
-        className={`px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed`}
+if (error && error !== 'No goals found for this user') {
+  return (
+    <div className="error-container">
+      <p className="error-message">Error: {error}</p>
+      <button 
+        onClick={() => window.location.reload()}
+        className="button button-primary"
       >
-        {isSigningOut ? 'Signing out...' : 'Sign Out'}
+        Retry
       </button>
     </div>
   );
+}
+
+return (
+  <div className="content-wrapper">
+    <h1 className="page-title">Profile</h1>
+    
+    {profile && (
+      <div className="profile-section">
+        <p className="profile-info">Name: {profile.name}</p>
+        <p className="profile-info">Email: {profile.email}</p>
+        <img src={icon} alt="profile_icon" />
+      </div>
+    )}
+
+    <div className="goals-container">
+      {(!goals || goals.length === 0) ? (
+        <div className="goals-empty-state">
+          <p className="profile-info">No goals yet.</p>
+          <button
+            onClick={handleAddGoal}
+            className="button button-success"
+          >
+            Add your first goal
+          </button>
+        </div>
+      ) : (
+        <div>
+          <h2 className="section-title">Your goals</h2>
+          <ul className="goals-list">
+          {goals && goals.map((goal) => (
+            <li key={goal.goalId} className="goal-card">
+              <div className="goal-actions">
+                <button 
+                  onClick={() => handleEdit(goal.goalId)}
+                  className="button button-small button-primary"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(goal.goalId)}
+                  className="button button-small button-danger"
+                >
+                  Delete
+                </button>
+              </div>
+              <h3 className="goal-title">{goal.mealName}</h3>
+              <div className="goal-metrics">
+                {/* Labels Column */}
+                <ul className="metrics-labels">
+                  <li> </li>
+                  <li>Carbs</li>
+                  <li>Proteins</li>
+                  <li>Fats</li>
+                </ul>
+                
+                {/* Training Day Column */}
+                <div className="metrics-column">
+                  <p className="metrics-title">Train</p>
+                  <ul className="metrics-values">
+                    <li>{goal.carbsTrain}g</li>
+                    <li>{goal.proteinsTrain}g</li>
+                    <li>{goal.fatsTrain}g</li>
+                  </ul>
+                </div>
+
+                {/* Rest Day Column */}
+                <div className="metrics-column">
+                  <p className="metrics-title">Rest</p>
+                  <ul className="metrics-values">
+                    <li>{goal.carbsRest}g</li>
+                    <li>{goal.proteinsRest}g</li>
+                    <li>{goal.fatsRest}g</li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          ))}
+          </ul>
+          <button
+            onClick={handleAddGoal}
+            className="button button-success"
+          >
+            Add another goal
+          </button>
+        </div>
+      )}
+    </div>
+
+    <button
+      onClick={handleSignout}
+      disabled={isSigningOut}
+      className={`button ${isSigningOut ? 'button-disabled' : 'button-danger'}`}
+    >
+      {isSigningOut ? 'Signing out...' : 'Sign Out'}
+    </button>
+  </div>
+);
 };
 
 export default Profile;
