@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { editGoal, getGoals } from '../api.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import './EditGoals.css';
 
 const EditGoals = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const EditGoals = () => {
 
   return (
     <div className='content'>
-      <div className='info'>
+      <div className='edit-info'>
         <form className='prog_inputs' onSubmit={handleSubmit}>
           <div className='meal1'>
             {/* Display meal name instead of select */}
@@ -85,57 +86,82 @@ const EditGoals = () => {
                 />
             </div>
             
-            <input 
-              type='float' 
-              name='carbsTrain' 
-              value={formData.carbsTrain} 
-              onChange={handleChange} 
-              className='carbs_input'
-              placeholder={formData.carbsTrain}
-            />
-            <input 
-              type='float' 
-              name='proteinsTrain' 
-              value={formData.proteinsTrain} 
-              onChange={handleChange} 
-              className='proteins_input'
-              placeholder={formData.proteinsTrain}
-            />
-            <input 
-              type='float' 
-              name='fatsTrain' 
-              value={formData.fatsTrain} 
-              onChange={handleChange} 
-              className='fat_input'
-              placeholder={formData.fatsTrain}
-            />
-            <input 
-              type='float' 
-              name='carbsRest' 
-              value={formData.carbsRest} 
-              onChange={handleChange} 
-              className='carbs_input'
-              placeholder={formData.carbsRest}
-            />
-            <input 
-              type='float' 
-              name='proteinsRest' 
-              value={formData.proteinsRest} 
-              onChange={handleChange} 
-              className='proteins_input'
-              placeholder={formData.proteinsRest}
-            />
-            <input 
-              type='float' 
-              name='fatsRest' 
-              value={formData.fatsRest} 
-              onChange={handleChange} 
-              className='fat_input'
-              placeholder={formData.fatsRest}
-            />
-            <p>g</p>
+            <div className='inputs'>
+              <div className='edit-train'>
+                <p className='day-type'>Train</p>
+                <div className='carbs-info'>
+                <p>Carbs</p>
+                <input 
+                  type='float' 
+                  name='carbsTrain' 
+                  value={formData.carbsTrain} 
+                  onChange={handleChange} 
+                  className='carbs_input'
+                  placeholder={formData.carbsTrain}
+                />
+                </div>
+                <div className='proteins-info'>
+                  <p>Proteins</p>
+                <input 
+                  type='float' 
+                  name='proteinsTrain' 
+                  value={formData.proteinsTrain} 
+                  onChange={handleChange} 
+                  className='proteins_input'
+                  placeholder={formData.proteinsTrain}
+                />
+                </div>
+                <div className='fats-info'>
+                  <p>Fats</p>
+                <input 
+                  type='float' 
+                  name='fatsTrain' 
+                  value={formData.fatsTrain} 
+                  onChange={handleChange} 
+                  className='fat_input'
+                  placeholder={formData.fatsTrain}
+                />
+                </div>
+              </div>
+              <div className='edit-rest'>
+                <p className='day-type'>Rest</p>
+                <div className='carbs-info'>
+                  <p>Carbs</p>
+                <input 
+                  type='float' 
+                  name='carbsRest' 
+                  value={formData.carbsRest} 
+                  onChange={handleChange} 
+                  className='carbs_input'
+                  placeholder={formData.carbsRest}
+                />
+                </div>
+                <div className='proteins-info'>
+                  <p>Proteins</p>
+                <input 
+                  type='float' 
+                  name='proteinsRest' 
+                  value={formData.proteinsRest} 
+                  onChange={handleChange} 
+                  className='proteins_input'
+                  placeholder={formData.proteinsRest}
+                />
+                </div>
+                <div className='fats-info'>
+                  <p>Fats</p>
+                <input 
+                  type='float' 
+                  name='fatsRest' 
+                  value={formData.fatsRest} 
+                  onChange={handleChange} 
+                  className='fat_input'
+                  placeholder={formData.fatsRest}
+                />
+                </div>
+              </div>
+            </div>
           </div>
-          <button className='save_button' type="submit">Update</button>
+          <button className='edit-save-btn' type="submit">Update</button>
         </form>
       </div>
       {error && (

@@ -1,0 +1,63 @@
+.content {
+    align-self: center;
+    max-width: 42rem;
+}
+
+.meal1 {
+    display: flex;
+}
+
+.repas1 {
+    text-transform: uppercase;
+}
+
+.edit-info {
+    width: 100%;
+    align-self: center;
+}
+
+.day-type {
+    padding-bottom: 0.5rem;
+}
+
+.inputs {
+    display: flex;
+}
+
+.edit-train {
+    flex-direction: column;
+}
+
+.carbs_input, .proteins_input, .fat_input {
+    width: 25%;
+}
+
+.carbs-info, .proteins-info, .fats-info {
+    flex-direction: row;
+}
+
+.carbs-info > input, .proteins-info > input, .fats-info > input {
+    margin-top: 0.4rem;
+    margin-bottom: 0.8rem;
+}
+
+.carbs-info > p, .proteins-info > p, .fats-info > p {
+    font-size: small;
+}
+
+.edit-save-btn {
+    margin-top: 2rem;
+    width: 100%;
+    background-color: white;
+    color: #0C0809;
+    padding: 0.5rem 1rem;
+    border-color: #293614;
+    border: solid 1px;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.edit-save-btn:hover {
+    background-color: #293614;
+    color: white;
+}

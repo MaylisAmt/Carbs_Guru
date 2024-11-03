@@ -215,7 +215,7 @@ return (
           </ul>
           <button
             onClick={handleAddGoal}
-            className="button button-success"
+            className="add-goal-btn"
           >
             Add another goal
           </button>
@@ -226,7 +226,7 @@ return (
     <button
       onClick={handleSignout}
       disabled={isSigningOut}
-      className={`button ${isSigningOut ? 'button-disabled' : 'button-danger'}`}
+      className={`${isSigningOut ? 'button-disabled' : 'button-danger'}`}
     >
       {isSigningOut ? 'Signing out...' : 'Sign Out'}
     </button>

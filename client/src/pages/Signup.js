@@ -320,6 +320,7 @@ const SignupForm = () => {
       {/* <h2>Carbs Guru</h2> */}
       <form onSubmit={handleSubmit}>
       <input
+          className='signup-input'
           type="text"
           name="name"
           value={formData.name}
@@ -328,6 +329,7 @@ const SignupForm = () => {
           required
         />
         <input
+          className='signup-input'
           type="email"
           name="email"
           value={formData.email}
@@ -336,6 +338,7 @@ const SignupForm = () => {
           required
         />
         <input
+          className='signup-input'
           type="password"
           name="password"
           value={formData.password}
@@ -343,7 +346,7 @@ const SignupForm = () => {
           placeholder="Enter your password"
           required
         />
-        <button type="submit">Sign up</button>
+        <button type="submit" className='signup-submit-btn'>Sign up</button>
       </form>
       <p className='signin-link'>
         <Link to="/signin">Log in here</Link>

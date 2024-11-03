@@ -73,7 +73,7 @@ form {
     font-size: 0.9rem;
   } */
 
-  * {
+  /* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -82,13 +82,13 @@ form {
   html, body {
     height: 100%;
     width: 100%;
-    /* background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180)); */
+    background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180));
     background-repeat: no-repeat;
   }
 
   body {
     overflow-x: hidden;
-  }
+  } */
 
   .container {
     display: flex;
@@ -118,7 +118,7 @@ form {
     padding: 2rem;
   }
   
-  input {
+  .signin-input {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
@@ -126,7 +126,7 @@ form {
     border-radius: 0.25rem;
   }
   
-  /* button {
+  .signup-submit-btn {
     width: 100%;
     background-color: white;
     color: #0C0809;
@@ -137,10 +137,10 @@ form {
     border: solid 1px;
   }
   
-  button:hover {
+  .signup-submit-btn:hover {
     background-color: #293614;
     color: white;
-  } */
+  }
 
   .signup-link {
     color: #0C0809;

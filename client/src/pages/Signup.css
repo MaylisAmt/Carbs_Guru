@@ -151,7 +151,7 @@ p a:hover {
 } */
 
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -160,14 +160,14 @@ p a:hover {
 html, body {
   height: 100%;
   width: 100%;
-  /* background-color: red; */
-  /* background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180)); */
+  background-color: red;
+  background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180));
   background-repeat: no-repeat;
 }
 
 body {
   overflow-x: hidden;
-}
+} */
 
 .container {
   display: flex;
@@ -197,7 +197,7 @@ form {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); */
 }
 
-input {
+.signup-input {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1rem;
@@ -206,7 +206,7 @@ input {
   background-color: rgb(244,243,210);
 }
 
-/* button {
+.signup-submit-btn {
   width: 100%;
   background-color: white;
   color: #0C0809;
@@ -217,10 +217,10 @@ input {
   cursor: pointer;
 }
 
-button:hover {
+.signup-submit-btn:hover {
   background-color: #293614;
   color: white;
-} */
+}
 
 .signin-link {
   color: #0C0809;
