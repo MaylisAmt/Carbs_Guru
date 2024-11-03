@@ -161,7 +161,7 @@ html, body {
   height: 100%;
   width: 100%;
   /* background-color: red; */
-  background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180));
+  /* background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180)); */
   background-repeat: no-repeat;
 }
 
@@ -206,7 +206,7 @@ input {
   background-color: rgb(244,243,210);
 }
 
-button {
+/* button {
   width: 100%;
   background-color: white;
   color: #0C0809;
@@ -220,7 +220,7 @@ button {
 button:hover {
   background-color: #293614;
   color: white;
-}
+} */
 
 .signin-link {
   color: #0C0809;

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getProfile, getGoals, signout, deleteGoal } from '../api.js';
 import { useNavigate } from 'react-router-dom';
 import icon from '../assets/icon.png';
+import editpencil from '../assets/editpencil.png';
+import bin from '../assets/bin.png';
 import './Profile.css';
 //import EditGoals from '../components/EditGoals.js';
 
@@ -167,15 +169,15 @@ return (
               <div className="goal-actions">
                 <button 
                   onClick={() => handleEdit(goal.goalId)}
-                  className="button button-small button-primary"
+                  className="button-small button-primary"
                 >
-                  Edit
+                  <img src={editpencil} alt='edit-button' className='edit-button-img' />
                 </button>
                 <button 
                   onClick={() => handleDelete(goal.goalId)}
                   className="button button-small button-danger"
                 >
-                  Delete
+                  <img src={bin} alt='delete-button' className='delete-button-img' />
                 </button>
               </div>
               <h3 className="goal-title">{goal.mealName}</h3>

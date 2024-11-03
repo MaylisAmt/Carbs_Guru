@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { editGoal, getGoals } from '../api.js';
 import { useNavigate, useParams } from 'react-router-dom';
-//import './AddGoals.css';  // Assuming you'll use the same styling
 
 const EditGoals = () => {
   const navigate = useNavigate();
