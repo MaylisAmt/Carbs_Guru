@@ -5,11 +5,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(45deg, rgb(245, 245, 220), rgb(235, 210, 180));
+  min-height: 100vh;
 }
 
-html {
+/* html {
   margin: 0;
-}
+  height: 100%;
+} */
 
 * {
   margin: 0;

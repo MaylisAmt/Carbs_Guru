@@ -130,7 +130,7 @@ const SigninForm = () => {
           placeholder="Enter your password"
           required
         />
-        <button className='signup-submit-btn' type="submit">Log in</button>
+        <button className='signup-submit-btn' name='log in' type="submit">Log in</button>
       </form>
       <p className='signup-link'>
         <Link to="/signup">Sign up here</Link>

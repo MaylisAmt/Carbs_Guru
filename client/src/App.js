@@ -10,6 +10,7 @@ import Signin from './pages/Signin.js';
 import Profile from './pages/Profile.js';
 import EditGoals from './components/EditGoals.js';
 import AddGoals from './components/AddGoals.js';
+import Footer from './components/Footer.js';
 
 // async function whoAmI(accessToken) {
 //   return fetch('http://localhost:3000/profile', {
@@ -24,6 +25,7 @@ const App = () => {
   
     return (
       <div className="App">
+        <div className='content'>
         <Router>
           {/* <nav>
             <ul>
@@ -59,7 +61,8 @@ const App = () => {
             <Route path="/profile" element={<Profile/>} />
           </Routes>
         </Router>
-        
+        </div>
+        <Footer />
       </div>
     );
   

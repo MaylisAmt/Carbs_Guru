@@ -325,7 +325,7 @@ const SignupForm = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Enter your name"
+          placeholder="Enter your username"
           required
         />
         <input
