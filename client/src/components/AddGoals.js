@@ -52,15 +52,40 @@ const AddGoals = () => {
               <option value='snack'>Snack</option>
               <option value='dinner'>Dinner</option>
             </select>
-            <input type='float' name='carbsTrain' value={formData.carbsTrain} onChange={handleChange} className='carbs_input'></input>
-            <input type='float' name='proteinsTrain' value={formData.proteinsTrain} onChange={handleChange} className='proteins_input'></input>
-            <input type='float' name='fatsTrain' value={formData.fatsTrain} onChange={handleChange} className='fat_input'></input>
-            <input type='float' name='carbsRest' value={formData.carbsRest} onChange={handleChange} className='carbs_input'></input>
-            <input type='float' name='proteinsRest' value={formData.proteinsRest} onChange={handleChange} className='proteins_input'></input>
-            <input type='float' name='fatsRest' value={formData.fatsRest} onChange={handleChange} className='fat_input'></input>
-            <p>g</p>
+            <div className='inputs'>
+              <div className='edit-train'>
+                <p className='day-type'>Train</p>
+                <div className='carbs-info'>
+                  <p>Carbs</p>
+                <input type='float' name='carbsTrain' value={formData.carbsTrain} onChange={handleChange} className='carbs_input'></input>
+                </div>
+                <div className='proteins-info'>
+                  <p>Proteins</p>
+                <input type='float' name='proteinsTrain' value={formData.proteinsTrain} onChange={handleChange} className='proteins_input'></input>
+                </div>
+                <div className='fats-info'>
+                  <p>Fats</p>
+                <input type='float' name='fatsTrain' value={formData.fatsTrain} onChange={handleChange} className='fat_input'></input>
+                </div>
+              </div>
+              <div className='edit-rest'>
+                <p className='day-type'>Rest</p>
+                <div className='carbs-info'>
+                  <p>Carbs</p>
+                <input type='float' name='carbsRest' value={formData.carbsRest} onChange={handleChange} className='carbs_input'></input>
+                </div>
+                <div className='proteins-info'>
+                  <p>Proteins</p>
+                <input type='float' name='proteinsRest' value={formData.proteinsRest} onChange={handleChange} className='proteins_input'></input>
+                </div>
+                <div className='fats-info'>
+                  <p>Fats</p>
+                <input type='float' name='fatsRest' value={formData.fatsRest} onChange={handleChange} className='fat_input'></input>
+                </div>
+              </div>
+            </div>
           </div>
-          <button className='save_button' type="submit">Save</button>
+          <button className='save_button' type="submit">Add goal</button>
         </form>
       </div>
       {error && (

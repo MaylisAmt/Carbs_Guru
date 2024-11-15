@@ -66,6 +66,7 @@ import { signin } from '../api.js';
 import { setToken } from '../auth.js';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import './Signin.css';
 
 const SigninForm = () => {
   const navigate = useNavigate();
@@ -109,9 +110,10 @@ const SigninForm = () => {
       <div className="logo">
         <img src={logo} alt="Carbs Guru Logo" className="logo" />
       </div>
-      <h2>Carbs Guru</h2>
+      {/* <h2>Carbs Guru</h2> */}
       <form onSubmit={handleSubmit}>
         <input
+          className='signin-input'
           type="email"
           name="email"
           value={formData.email}
@@ -120,6 +122,7 @@ const SigninForm = () => {
           required
         />
         <input
+          className='signin-input'
           type="password"
           name="password"
           value={formData.password}
@@ -127,9 +130,9 @@ const SigninForm = () => {
           placeholder="Enter your password"
           required
         />
-        <button type="submit">Log in</button>
+        <button className='signup-submit-btn' name='log in' type="submit">Log in</button>
       </form>
-      <p>
+      <p className='signup-link'>
         <Link to="/signup">Sign up here</Link>
       </p>
 
