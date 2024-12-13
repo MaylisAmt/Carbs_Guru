@@ -96,8 +96,8 @@ const SigninForm = () => {
       });
 
       setTimeout(() => {
-        navigate('/profile');
-      }, 1500);
+        navigate('/home');
+      }, 1300);
 
     } catch (err) {
       setError(err.message || 'An error occurred during signin');

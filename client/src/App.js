@@ -8,10 +8,12 @@ import Contact from './pages/Contact.js';
 import Signup from './pages/Signup.js';
 import Signin from './pages/Signin.js';
 import Profile from './pages/Profile.js';
+import Home from './pages/Home.js';
 import EditGoals from './components/EditGoals.js';
 import AddGoals from './components/AddGoals.js';
 import Footer from './components/Footer.js';
 import LegalNotice from './components/LegalNotice.js';
+
 
 // async function whoAmI(accessToken) {
 //   return fetch('http://localhost:3000/profile', {
@@ -53,6 +55,7 @@ const App = () => {
 
           <Routes>
             <Route path="/" element={<Signin/>} />
+            <Route path="/home" element={<Home/>} />
             <Route path="/about" element={<About/>} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/signup" element={<Signup/>} />

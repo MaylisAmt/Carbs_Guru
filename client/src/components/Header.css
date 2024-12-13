@@ -1,23 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 /* Signin.css */
 .header {
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
+/*   font-family: "Poppins", sans-serif;
+  font-weight: 400; */
   font-style: normal;
   height: 15vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 50px;
+  stroke :red 
   }
 
 .header-title {
   font-weight: 600;
   font-style: bold;
+  
 }
 
 .logo-header {
-    width: auto;
+    width: 100px;
     height: auto;
 }

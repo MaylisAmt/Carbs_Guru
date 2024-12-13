@@ -288,10 +288,10 @@ app.post('/signup', async (req, res) => {
     app.post('/goals', authenticateToken, async (req, res) => {
         try {
 
-          console.log('User from token:', req.user); // Debug log to see the user object
+         /*  console.log('User from token:', req.user); // Debug log to see the user object
           console.log('User ID type:', typeof req.user.id); // Debug log to see the ID type
           console.log('User ID value:', req.user.id); // Debug log to see the actual ID
-
+ */
 
           const {
             mealName,

@@ -5,6 +5,7 @@ import icon from '../assets/icon.png';
 import editpencil from '../assets/editpencil.png';
 import bin from '../assets/bin.png';
 import './Profile.css';
+import Footer from '../components/Footer.js';
 //import EditGoals from '../components/EditGoals.js';
 
 const Profile = () => {
@@ -230,6 +231,7 @@ return (
     >
       {isSigningOut ? 'Signing out...' : 'Sign Out'}
     </button>
+    <Footer/>
   </div>
 );
 };
