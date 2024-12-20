@@ -169,13 +169,13 @@ return (
               <div className="goal-actions">
                 <button 
                   onClick={() => handleEdit(goal.goalId)}
-                  className="button-small button-primary"
+                  className="button-edit-btn"
                 >
                   <img src={editpencil} alt='edit-button' className='edit-button-img' />
                 </button>
                 <button 
                   onClick={() => handleDelete(goal.goalId)}
-                  className="button button-small button-danger"
+                  className="button-delete-btn"
                 >
                   <img src={bin} alt='delete-button' className='delete-button-img' />
                 </button>
@@ -213,6 +213,10 @@ return (
             </li>
           ))}
           </ul>
+          <h2 className='section-title'>Your daily total</h2>
+          <div className='daily-card'>
+          
+          </div>
           <button
             onClick={handleAddGoal}
             className="add-goal-btn"
@@ -226,7 +230,7 @@ return (
     <button
       onClick={handleSignout}
       disabled={isSigningOut}
-      className={`${isSigningOut ? 'button-disabled' : 'button-danger'}`}
+      className={`${isSigningOut ? 'button-disabled' : 'button-signout'}`}
     >
       {isSigningOut ? 'Signing out...' : 'Sign Out'}
     </button>
