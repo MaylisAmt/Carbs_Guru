@@ -230,7 +230,7 @@ img {
     /* color: white; */
   }
 
-  .add-goal-btn {
+  .add-goal-btn, .button-signout {
     width: 100%;
     background-color: white;
     color: #0C0809;
@@ -241,25 +241,31 @@ img {
     cursor: pointer;
   }
 
-  .add-goal-btn:hover {
+  .add-goal-btn:hover, .button-signout:hover {
     background-color: #293614;
     color: white;
   }
   
-  .button-danger {
+  .button-delete-btn, .button-edit-btn {
     width: 100%;
     background-color: white;
     color: #0C0809;
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem; */
     border-color: #293614;
     border: solid 1px;
     border-radius: 0.25rem;
     cursor: pointer;
+    padding: 0.25rem 0.25rem;
+    font-size: 0.875rem;
   }
   
-  .button-danger:hover {
-    background-color: #293614;
-    color: white;
+  .button-delete-btn:hover, .button-edit-btn:hover {
+    /* background-color: #293614; */
+    /* color: white; */
+    border-color: #293614;
+    border: solid 2px;
+    border-radius: 0.25rem;
+
   }
   
   .button-disabled {
