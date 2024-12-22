@@ -135,6 +135,7 @@ const Home = () => {
               <div className='create-menu'>
                 <button 
                 className='create-menu-btn'
+                onClick={() => handleCreateMenu(goal)}
                 >
                   Create my menu
                 </button>
