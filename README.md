@@ -22,9 +22,13 @@ cd <NOM_DU_REPERTOIRE>
 ```
 
 2. Configuration des variables d'environnement
-Avant de lancer l'application, créez un fichier .env à partir de l'exemple fourni :
+Avant de lancer l'application, créez un fichier .env à la racine du projet et ajoutez-y les variables suivantes :
 ```
-cp .env.example .env
+POSTGRES_USER=your_postgres_user
+POSTGRES_PASSWORD=your_postgres_password
+POSTGRES_DB=your_database_name
+PGADMIN_DEFAULT_EMAIL=your_email@example.com
+PGADMIN_DEFAULT_PASSWORD=your_pgadmin_password
 ```
 
 #### Variables d'environnement requises
@@ -51,6 +55,14 @@ Une fois les conteneurs lancés, accédez à l'application dans votre navigateur
 Pour vérifier que tout fonctionne correctement, consultez les logs Docker :
 ```
 docker logs <nom_du_conteneur>
+```
+3. Arrêter les services
+```
+docker-compose down
+```
+4. Lister les services actifs
+```
+docker-compose ps
 ```
 
 #### Tests de Fonctionnement
