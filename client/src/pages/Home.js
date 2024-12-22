@@ -1,7 +1,7 @@
-// Home.js
 import React, { useState, useEffect } from 'react';
 import { getProfile, getGoals, signout } from '../api.js';
 import './Home.css';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
@@ -10,6 +10,7 @@ const Home = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [isTrainingMode, setIsTrainingMode] = useState(false)
+    const navigate = useNavigate();
  
     useEffect(() => {
       const abortController = new AbortController();
@@ -63,7 +64,22 @@ const Home = () => {
     setIsTrainingMode(e.target.checked);
   };
   
-
+  const handleCreateMenu = (goal) => {
+    navigate('/create-menu', {
+      state: {
+        mealName: goal.mealName,
+        goals: {
+          carbsTrain: goal.carbsTrain,
+          proteinsTrain: goal.proteinsTrain,
+          fatsTrain: goal.fatsTrain,
+          carbsRest: goal.carbsRest,
+          proteinsRest: goal.proteinsRest,
+          fatsRest: goal.fatsRest,
+          isTrainingMode: isTrainingMode
+        }
+      }
+    });
+  };
 
   return (
     <div>
@@ -93,7 +109,6 @@ const Home = () => {
               <div className="goal-metrics">
                 {/* Labels Column */}
                 <ul className="metrics-labels">
-                  <li> </li>
                   <li>Carbs</li>
                   <li>Proteins</li>
                   <li>Fats</li>
@@ -101,7 +116,6 @@ const Home = () => {
                 
                 { isTrainingMode ? (
                 <div className="metrics-column">
-                  <p className="metrics-title">Train</p>
                   <ul className="metrics-values">
                     <li>{goal.carbsTrain}g</li>
                     <li>{goal.proteinsTrain}g</li>
@@ -110,7 +124,6 @@ const Home = () => {
                 </div>
                 ) : (
                 <div className="metrics-column">
-                  <p className="metrics-title">Rest</p>
                   <ul className="metrics-values">
                     <li>{goal.carbsRest}g</li>
                     <li>{goal.proteinsRest}g</li>
@@ -120,7 +133,9 @@ const Home = () => {
                 )}
               </div>
               <div className='create-menu'>
-                <button className='create-menu-btn'>
+                <button 
+                className='create-menu-btn'
+                >
                   Create my menu
                 </button>
               </div> 
