@@ -31,12 +31,6 @@ PGADMIN_DEFAULT_EMAIL=your_email@example.com
 PGADMIN_DEFAULT_PASSWORD=your_pgadmin_password
 ```
 
-#### Variables d'environnement requises
-APP_PORT : Le port sur lequel l'application sera accessible (ex : 8000)  
-DATABASE_URL : URL de connexion à la base de données  
-API_KEY : Clé API pour des services tiers (si nécessaire)  
-Configurez chaque variable en fonction de votre environnement cible dans le fichier .env.
-
 ## Instructions de Déploiement
 
 1. Construire et Lancer les Conteneurs
