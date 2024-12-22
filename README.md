@@ -8,8 +8,8 @@ Cette application de nutrition permet aux utilisateurs de créer, modifier et su
 
 Avant de commencer, assurez-vous d’avoir les éléments suivants installés :
 
-Docker (version 20.10 ou supérieure)
-Docker Compose (si vous utilisez docker-compose.yml, version 1.29 ou supérieure)
+Docker (version 20.10 ou supérieure)  
+Docker Compose (si vous utilisez docker-compose.yml, version 1.29 ou supérieure)  
 Git (pour cloner le dépôt)
 
 
@@ -28,9 +28,9 @@ cp .env.example .env
 ```
 
 #### Variables d'environnement requises
-APP_PORT : Le port sur lequel l'application sera accessible (ex : 8000)
-DATABASE_URL : URL de connexion à la base de données
-API_KEY : Clé API pour des services tiers (si nécessaire)
+APP_PORT : Le port sur lequel l'application sera accessible (ex : 8000)  
+DATABASE_URL : URL de connexion à la base de données  
+API_KEY : Clé API pour des services tiers (si nécessaire)  
 Configurez chaque variable en fonction de votre environnement cible dans le fichier .env.
 
 ## Instructions de Déploiement
@@ -56,8 +56,8 @@ docker logs <nom_du_conteneur>
 #### Tests de Fonctionnement
 Une fois l'application déployée, vous pouvez effectuer quelques vérifications de base :
 
-Connexion à l'application : accédez à l'URL de l’application et vérifiez que l'interface s'affiche correctement.
-Tests des fonctionnalités de base : testez l'ajout, la modification et la suppression de programmes alimentaires.
+Connexion à l'application : accédez à l'URL de l’application et vérifiez que l'interface s'affiche correctement.  
+Tests des fonctionnalités de base : testez l'ajout, la modification et la suppression de programmes alimentaires.  
 Calcul des apports : vérifiez que la fonctionnalité de calcul des apports fonctionne correctement et affiche des résultats.
 
 #### Débogage et Résolution des Problèmes
