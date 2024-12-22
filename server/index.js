@@ -67,6 +67,13 @@ export const authenticateToken = (req, res, next) => {
     }
   };
 
+//Verify password complexity
+const validatePasswordSecurity = (password) => {
+  // Minimum 8 chars, at least 1 uppercase, 1 number and 1 special char
+  const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  return regex.test(password);
+};
+
 //Create User
 const User = sequelize.define('User', {
     id: {
@@ -169,10 +176,18 @@ app.get('/test', (req, res, next) => {
 app.post('/signup', async (req, res) => {
     try {
         const { email, password, name } = req.body;
+
+        //Check password complexity
+        if (!validatePasswordSecurity(password)) {
+          return res.status(400).json({
+            message: 'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character (among !@#$%^&*).'
+          });
+        }
+
         // Check if user already exists
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
-        return res.status(400).json({ message: 'User already exists' });
+        return res.status(400).json({ message: 'Impossible to create account' });
         }
         // Create new user
         const user = await User.create({
@@ -211,7 +226,7 @@ app.post('/signup', async (req, res) => {
           // Validate password
           const isValidPassword = await user.validatePassword(password);
           if (!isValidPassword) {
-            return res.status(400).json({ message: 'Invalid password' });
+            return res.status(400).json({ message: 'Error: connection not allowed.' });
           }
           // Generate JWT token
           const token = jwt.sign(
