@@ -68,8 +68,8 @@ img {
 
 .content {
     align-self: center;
-    max-width: 42rem;
-    padding-top: 8rem;
+    max-width: 100%;
+    /* padding-top: 8rem; */
 }
 
 .prog_inputs {

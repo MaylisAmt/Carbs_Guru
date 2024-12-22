@@ -1,0 +1,78 @@
+.create-menu-btn {
+    background : none;
+    border : none;
+    text-decoration : underline;
+    cursor: pointer;
+}
+
+.create-menu{
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+}
+
+.toggle-trainMode{
+    margin : 0px 50px;
+}
+.training-toggle-text {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0px;
+}
+
+/* toggle creation :  */
+input[type="checkbox"].toggle{
+    opacity : 0;
+    position : absolute;
+    cursor: pointer;
+    left: -9000px;
+    top : -9000px;
+}
+
+input[type="checkbox"].toggle + label {
+    display : flex;
+    align-items: center;
+    position : relative;
+    cursor: pointer;
+    width :fit-content;
+}
+
+input[type="checkbox"].toggle + label::before{
+    background-color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 0.5rem;
+    content : "";
+    width : 2em;
+    height: 1em;
+    margin-right: 0.25em;
+    transition: background-color 200ms ease-in-out;
+}
+
+input[type="checkbox"].toggle:focus + label::before{
+   outline: solid 1px rgb(170, 170, 170);
+   box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.1), inset 0px -5px 15px rgba(255,255,255,0.1);
+}
+
+input[type="checkbox"].toggle + label::after{
+    background-color: #293614;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 0.5rem;
+    content : "";
+    width : .9em;
+    height: .9em;
+    position : absolute;
+    left: .1em;
+    transition: background-color 200ms ease-in-out, transform 200ms ease-in-out;
+}
+
+input[type="checkbox"].toggle:checked + label::before{
+    background-color: #293614;
+}
+
+input[type="checkbox"].toggle:checked + label::after{
+    background-color: #EAEBC8;
+    transform : translateX(100%)
+
+}
+
+

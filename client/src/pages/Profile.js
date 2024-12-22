@@ -235,7 +235,6 @@ return (
     >
       {isSigningOut ? 'Signing out...' : 'Sign Out'}
     </button>
-    <Footer/>
   </div>
 );
 };

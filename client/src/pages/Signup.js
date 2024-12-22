@@ -314,9 +314,10 @@ const SignupForm = () => {
 
   return (
     <div className="container">
-      <div className="logo">
+      {/* <div className="logo">
         <img src={logo} alt="Carbs Guru Logo" className="logo" />
-      </div>
+      </div> */}
+      <p>Welcome! Fill in the information to sign up </p>
       {/* <h2>Carbs Guru</h2> */}
       <form onSubmit={handleSubmit}>
       <input
