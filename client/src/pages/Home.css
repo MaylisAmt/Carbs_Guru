@@ -14,6 +14,11 @@
 .toggle-trainMode{
     margin : 0px 50px;
 }
+.training-toggle-text {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0px;
+}
 
 /* toggle creation :  */
 input[type="checkbox"].toggle{
@@ -29,6 +34,7 @@ input[type="checkbox"].toggle + label {
     align-items: center;
     position : relative;
     cursor: pointer;
+    width :fit-content;
 }
 
 input[type="checkbox"].toggle + label::before{

@@ -12,6 +12,7 @@ import Home from './pages/Home.js';
 import EditGoals from './components/EditGoals.js';
 import AddGoals from './components/AddGoals.js';
 import Footer from './components/Footer.js';
+import Header from './components/Header.js';
 import LegalNotice from './components/LegalNotice.js';
 
 
@@ -28,8 +29,10 @@ const App = () => {
   
     return (
       <div className="App">
-        <div className='content'>
+        
+          
         <Router>
+        <Header/>
           {/* <nav>
             <ul>
               <li>
@@ -67,7 +70,7 @@ const App = () => {
           </Routes>
           <Footer />
         </Router>
-        </div>
+        
       </div>
     );
   

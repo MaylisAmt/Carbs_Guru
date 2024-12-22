@@ -1,7 +1,5 @@
 // Home.js
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header.js';
-import Footer from '../components/Footer.js';
 import { getProfile, getGoals, signout } from '../api.js';
 import './Home.css';
 
@@ -69,7 +67,6 @@ const Home = () => {
 
   return (
     <div>
-        <Header />
         
             <h2>Welcome to the Home Page</h2>
         
@@ -77,13 +74,16 @@ const Home = () => {
           <h2 className="section-title">Your goals</h2>
           <div className='toggle-trainMode'>
             <div>
+              <div className='training-toggle-text'>
+                <p>Will you be training today ?</p>
+              </div>
               <input 
               type='checkbox' 
               id='train-mode-toggle' 
               className='toggle' 
               checked={isTrainingMode}
               onChange={handleToggleChange}/> 
-              <label for='train-mode-toggle'> Training today ? </label> 
+              <label for='train-mode-toggle'></label> 
             </div>
           </div>
           <ul className="goals-list">
@@ -125,17 +125,14 @@ const Home = () => {
                 </button>
               </div> 
             </li>
-          ))}
+         
+         ))}
           </ul>
           <h2 className='section-title'>Your daily total</h2>
-          <div className='daily-card'>
-          
-          </div>
-          
         </div>
       
 
-        <Footer />
+        
     </div>
   )
 };

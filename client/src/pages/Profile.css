@@ -93,12 +93,7 @@ img {
     min-height: 100vh;
   }
   
-  .content-wrapper {
-    padding: 1rem;
-    max-width: 42rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
+
   
   /* Profile Section */
   .profile-section {
@@ -139,6 +134,7 @@ img {
     gap: 1.5rem;
     list-style-type: none; /* Remove bullet points */
     /* align-items: center; */
+    justify-content: center;
     flex-wrap: wrap;
     padding : 50px;
   }
@@ -148,10 +144,9 @@ img {
     padding: 1.5rem;
     border-radius: 0.5rem;
     position: relative; /*For positioning the buttons */
-    
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     background-color: white;
-    margin-bottom: 2rem;
+    width : 300px;
   }
 
   
@@ -229,7 +224,7 @@ img {
   }
 
   .add-goal-btn, .button-signout {
-    width: 100%;
+    width: 300px;
     background-color: white;
     color: #0C0809;
     padding: 0.5rem 1rem;
