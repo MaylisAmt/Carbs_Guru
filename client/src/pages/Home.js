@@ -11,6 +11,7 @@ const Home = () => {
     const [goals, setGoals] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [isTrainingMode, setIsTrainingMode] = useState(false)
  
     useEffect(() => {
       const abortController = new AbortController();
@@ -59,7 +60,13 @@ const Home = () => {
       abortController.abort();
     };
   }, []);
+
+  const handleToggleChange = (e) => {
+    setIsTrainingMode(e.target.checked);
+  };
   
+
+
   return (
     <div>
         <Header />
@@ -70,7 +77,12 @@ const Home = () => {
           <h2 className="section-title">Your goals</h2>
           <div className='toggle-trainMode'>
             <div>
-              <input type='checkbox' id='train-mode-toggle' className='toggle'/> 
+              <input 
+              type='checkbox' 
+              id='train-mode-toggle' 
+              className='toggle' 
+              checked={isTrainingMode}
+              onChange={handleToggleChange}/> 
               <label for='train-mode-toggle'> Training today ? </label> 
             </div>
           </div>
@@ -87,7 +99,7 @@ const Home = () => {
                   <li>Fats</li>
                 </ul>
                 
-                {/* Training Day Column */}
+                { isTrainingMode ? (
                 <div className="metrics-column">
                   <p className="metrics-title">Train</p>
                   <ul className="metrics-values">
@@ -96,8 +108,7 @@ const Home = () => {
                     <li>{goal.fatsTrain}g</li>
                   </ul>
                 </div>
-
-                {/* Rest Day Column */}
+                ) : (
                 <div className="metrics-column">
                   <p className="metrics-title">Rest</p>
                   <ul className="metrics-values">
@@ -106,6 +117,7 @@ const Home = () => {
                     <li>{goal.fatsRest}g</li>
                   </ul>
                 </div>
+                )}
               </div>
               <div className='create-menu'>
                 <button className='create-menu-btn'>
