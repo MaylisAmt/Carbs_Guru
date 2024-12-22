@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
 import { getProfile, getGoals, signout } from '../api.js';
+import './Home.css';
 
 const Home = () => {
 
@@ -64,10 +65,15 @@ const Home = () => {
         <Header />
         
             <h2>Welcome to the Home Page</h2>
-            <p>This is the home page of our application.</p>
         
         <div>
           <h2 className="section-title">Your goals</h2>
+          <div className='toggle-trainMode'>
+            <div>
+              <input type='checkbox' id='train-mode-toggle' className='toggle'/> 
+              <label for='train-mode-toggle'> Training today ? </label> 
+            </div>
+          </div>
           <ul className="goals-list">
           {goals && goals.map((goal) => (
             <li key={goal.goalId} className="goal-card">
@@ -101,6 +107,11 @@ const Home = () => {
                   </ul>
                 </div>
               </div>
+              <div className='create-menu'>
+                <button className='create-menu-btn'>
+                  Create my menu
+                </button>
+              </div> 
             </li>
           ))}
           </ul>
