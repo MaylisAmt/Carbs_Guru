@@ -208,7 +208,7 @@ const Meal = sequelize.define('Meal', {
 
 Meal.hasMany(FoodItem, {
   foreignKey: 'mealId',
-  as: 'foodItems' 
+  as: 'foodItems'  
 });
 
 FoodItem.belongsTo(Meal, {
@@ -393,15 +393,15 @@ app.post('/signup', async (req, res) => {
         }
       });
 
-      //Retrive all goals corresponding to the authenticated user
+      
       app.get('/goals', authenticateToken, async (req, res) => {
         try {
-          const userId = req.user.id; // Get the user ID from the authenticated token
+          const userId = req.user.id; 
       
           // Find all goals for this user
           const goals = await Goal.findAll({
             where: { userId },
-            order: [['createdAt', 'DESC']] // Optional: Order by creation date, newest first
+            order: [['createdAt', 'DESC']] 
           });
       
           if (goals.length === 0) {
@@ -483,3 +483,19 @@ app.post('/signup', async (req, res) => {
       }
 
       });
+
+      
+app.get('/food-items', async (req, res) => {
+  try {
+    const foodItems = await FoodItem.findAll({
+      order: [['createdAt', 'DESC']]
+    });
+    res.setHeader('Content-Type', 'application/json');
+    res.json(foodItems);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des aliments:', error);
+    res.status(500).json({ 
+      message: "Erreur lors de la récupération des aliments" 
+    });
+  }
+});

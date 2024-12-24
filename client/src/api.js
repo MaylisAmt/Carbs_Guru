@@ -118,3 +118,13 @@ export const deleteGoal = async (goalId) => {
     throw error.response?.data || error;
   }
 };
+
+export const getFoodList = async () => {
+  try {
+    const response = await api.get('/food-items');
+    // console.log("getFoodList response.data: ", response.data);
+    return response.data
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}

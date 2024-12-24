@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './CreateMenu.css'
 import BackArrow from '../components/BackArrow.js';
+import FoodList from '../components/FoodList.js';
 
 const CreateMenu = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const CreateMenu = () => {
         <div className='foodBoard'> 
           <div className='pantryItems'>
             <p>Items to choose from :</p>
+            <FoodList/>
           </div>
           <div className='chosenItems'> 
             <p>Items I chose : </p>
