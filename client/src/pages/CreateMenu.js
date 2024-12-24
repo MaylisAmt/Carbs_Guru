@@ -1,13 +1,15 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './CreateMenu.css'
+import BackArrow from '../components/BackArrow.js';
 
 const CreateMenu = () => {
   const location = useLocation();
   const { mealName, goals } = location.state;
 
   return (
-    <div>
+    <div className='create-menu-page' >
+      <BackArrow/>
       <h2>Today's menu for my {mealName}</h2>
       <div className="meal-goals">
         <h3>Reminder of today's goals :</h3>
@@ -27,7 +29,14 @@ const CreateMenu = () => {
       </div>
       <div className='pantry'>
         <h3>Pantry</h3>
-
+        <div className='foodBoard'> 
+          <div className='pantryItems'>
+            <p>Items to choose from :</p>
+          </div>
+          <div className='chosenItems'> 
+            <p>Items I chose : </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,31 @@
+.create-menu-page{
+display : flex;
+width : 100%;
+flex-direction: column;
+padding : 0px 100px;
+align-content: flex-start;
+height : 100vh;
+}
+
 .pantry {
     display: flex;
     align-items: flex-start;
+    flex-direction: column;
+}
+
+.foodBoard{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width : 50%;
+}
+
+.pantryItems{
+    display: flex;
+    flex-direction: column;
+}
+
+.chosenItems{
+    display: flex;
+    flex-direction: column;
 }
