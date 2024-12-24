@@ -157,6 +157,64 @@ const Goal = sequelize.define('Goal', {
   });
   Goal.belongsTo(User);
 
+// define table food and meal to link them together to a goal : 
+const Meal = sequelize.define('Meal', {
+  mealId : {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  }, 
+  goalId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: Goal, //Use the model object as the foreign key
+      key: 'goalId'
+    }
+  }
+}, {
+  tableName: 'meals'
+});  
+
+  const FoodItem = sequelize.define('FoodItem', {
+  foodId: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  },
+  mealId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: Meal, //Use the model object as the foreign key
+      key: 'mealId'
+    }
+  },
+  foodName:{
+    type : DataTypes.STRING,
+    allowNull: false
+  },
+  nutrient:{
+    type : DataTypes.ENUM('carbs', 'proteins', 'fats'),
+    allowNull:false
+  },
+  nutrient_value : {
+    type : DataTypes.FLOAT,
+    allowNull: true
+  }
+}, {
+  tableName: 'food_items'
+});
+
+Meal.hasMany(FoodItem, {
+  foreignKey: 'mealId',
+  as: 'foodItems' 
+});
+
+FoodItem.belongsTo(Meal, {
+  foreignKey: 'mealId'  // Utilise la même clé étrangère
+});
+
 app.get('/test', (req, res, next) => {
     try {
         res.status(200).json({message: 'Page de test backend'});
