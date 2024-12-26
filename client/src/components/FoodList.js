@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getFoodList } from '../api.js';
 import './FoodList.css'
 
-const FoodList = () => {
+const FoodList = ({ onFoodSelect }) => {
     const [foods, setFoods] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -22,13 +22,14 @@ const FoodList = () => {
   useEffect(() => {
     loadFoods();
   }, []);
-
-  // Afficher un message de chargement
+  
+  const handleFoodClick = (food) => {
+    onFoodSelect(food);
+  };
+ 
   if (isLoading) {
     return <div >Loading...</div>;
   }
-
-  // Afficher une erreur si nécessaire
   if (error) {
     return <div>{error}</div>;
   }
@@ -42,7 +43,8 @@ const FoodList = () => {
           ) : (
             foods.map((food) => (
               <div className='food-item-card'
-              key={food.foodId}>
+              key={food.foodId}
+              onClick={() => handleFoodClick(food)}>
                 <h3 >{food.foodName}</h3>
                 <p>
                   {food.nutrient } : {food.nutrient_value}g

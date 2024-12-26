@@ -25,7 +25,13 @@ height : 100vh;
     flex-direction: column;
 }
 
-.chosenItems{
+.chosen-item-card{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+#btn-food-item-card{
+
 }
