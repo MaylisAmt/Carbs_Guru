@@ -119,6 +119,18 @@ export const deleteGoal = async (goalId) => {
   }
 };
 
+export const createMeal = async (mealData) => {
+  try {
+    const response = await api.post('/meals', mealData);
+    console.log('Meal created:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating meal:', error)
+    console.log ('Meal data to save:', mealData);
+    throw error.response?.data || error;
+  }
+};
+
 export const getFoodList = async () => {
   try {
     const response = await api.get('/food-items');
@@ -128,3 +140,33 @@ export const getFoodList = async () => {
     throw error.response?.data || error;
   }
 }
+
+
+export const getMealFoods = async (meal) => {
+  try {
+    const response = await api.get(`/meals/${meal.mealId}/foods`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const addFoodToMeal = async (meal, foodId) => {
+  try {
+    console.log(`Adding food ${foodId} to meal ${meal.mealId}`); 
+    const response = await api.post(`/meals/${meal.mealId}/foods`, { foodId });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const removeFoodFromMeal = async (mealId, foodId) => {
+  try {
+    const response = await api.delete(`/meals/${mealId}/foods/${foodId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+

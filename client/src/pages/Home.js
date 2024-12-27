@@ -69,6 +69,7 @@ const Home = () => {
       state: {
         mealName: goal.mealName,
         goals: {
+          goalId: goal.goalId,
           carbsTrain: goal.carbsTrain,
           proteinsTrain: goal.proteinsTrain,
           fatsTrain: goal.fatsTrain,

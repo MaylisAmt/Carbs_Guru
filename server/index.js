@@ -182,14 +182,14 @@ const Meal = sequelize.define('Meal', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  mealId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: Meal, //Use the model object as the foreign key
-      key: 'mealId'
-    }
-  },
+  // mealId: {
+  //   type: DataTypes.UUID,
+  //   allowNull: false,
+  //   references: {
+  //     model: Meal, //Use the model object as the foreign key
+  //     key: 'mealId'
+  //   }
+  // },
   foodName:{
     type : DataTypes.STRING,
     allowNull: false
@@ -206,13 +206,41 @@ const Meal = sequelize.define('Meal', {
   tableName: 'food_items'
 });
 
-Meal.hasMany(FoodItem, {
-  foreignKey: 'mealId',
-  as: 'foodItems'  
+const MealFoodItem = sequelize.define('MealFoodItem', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  },
+  mealId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'meals',
+      key: 'mealId'
+    }
+  },
+  foodItemId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'food_items',
+      key: 'foodId'
+    }
+  }
+}, {
+  tableName: 'meal_food_items',
+  timestamps: true  
 });
 
-FoodItem.belongsTo(Meal, {
-  foreignKey: 'mealId'  // Utilise la même clé étrangère
+Meal.belongsToMany(FoodItem, {
+  through: MealFoodItem,
+  foreignKey: 'mealId'
+});
+
+FoodItem.belongsToMany(Meal, {
+  through: MealFoodItem,
+  foreignKey: 'foodItemId'
 });
 
 app.get('/test', (req, res, next) => {
@@ -499,3 +527,100 @@ app.get('/food-items', async (req, res) => {
     });
   }
 });
+
+app.get('/meals/:mealId/foods', async (req, res) => {
+  try {
+    const { mealId } = req.params;
+
+    const meal = await Meal.findByPk(mealId, {
+      include: [{
+        model: FoodItem,
+        through: MealFoodItem
+      }]
+    });
+
+    res.status(200).json(meal.FoodItems);
+  } catch (error) {
+    console.error('Error fetching meal foods:', error);
+    res.status(500).json({ error: 'Failed to fetch meal foods' });
+  }
+});
+
+app.post('/meals/:mealId/foods', async (req, res) => {
+  try {
+    const { mealId } = req.params;
+    const { foodId } = req.body;
+  
+    const existingAssociation = await MealFoodItem.findOne({
+      where: {
+        mealId,
+        foodItemId: foodId
+      }
+    });
+
+    if (!existingAssociation) {
+      await MealFoodItem.create({
+        mealId,
+        foodItemId: foodId
+      });
+    }
+
+    res.status(200).json({ message: 'Food item added to meal successfully' });
+  } catch (error) {
+    console.error('Error adding food to meal:', error);
+    res.status(500).json({ error: 'Failed to add food to meal' });
+  }
+});
+
+
+app.delete('/meals/:mealId/foods/:foodId', async (req, res) => {
+  try {
+    const { mealId, foodId } = req.params;
+
+    await MealFoodItem.destroy({
+      where: {
+        mealId,
+        foodItemId: foodId
+      }
+    });
+
+    res.status(200).json({ message: 'Food item removed from meal successfully' });
+  } catch (error) {
+    console.error('Error removing food from meal:', error);
+    res.status(500).json({ error: 'Failed to remove food from meal' });
+  }
+});
+
+
+app.post('/meals', async (req, res) => {
+
+  const { mealName, goalId, foods, isTrainingMode } = req.body;
+  console.log('Request body /meals:', req.body)
+
+  const transaction = await sequelize.transaction();
+  try {
+    // Étape 1 : Créer le repas
+    const meal = await Meal.create({
+      mealName,
+      goalId,
+      isTrainingMode
+    }, { transaction });
+
+    // Étape 2 : Ajouter des éléments alimentaires
+    for (const foodId of foods) {
+        await MealFoodItem.create({
+            mealId: meal.mealId,
+            foodItemId: foodId,
+        }, { transaction });
+    }
+
+    // Étape 3 : Commit si tout est réussi
+    await transaction.commit();
+    res.status(201).json({ message: 'Meal created successfully', meal });
+} catch (error) {
+    // Rollback si une erreur se produit
+    await transaction.rollback();
+    res.status(400).json({ error: error.message });
+    throw error;
+}
+  })
