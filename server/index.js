@@ -531,15 +531,35 @@ app.get('/food-items', async (req, res) => {
 app.get('/meals/:mealId/foods', async (req, res) => {
   try {
     const { mealId } = req.params;
-
+    console.log('Recherche du repas avec ID:', mealId);
     const meal = await Meal.findByPk(mealId, {
       include: [{
         model: FoodItem,
-        through: MealFoodItem
+        through: MealFoodItem,
+        attributes: ['foodId', 'foodName', 'nutrient', 'nutrient_value']
       }]
     });
+    console.log('Repas trouvé:', meal)
 
-    res.status(200).json(meal.FoodItems);
+    if (!meal) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
+    // Si le repas est trouvé mais n'a pas d'aliments
+    if (!meal.FoodItems) {
+      console.log('Pas d\'aliments trouvés pour ce repas');
+      return res.json({ foods: [] });
+    }
+    // Formatons les données comme nous en avons besoin
+    const formattedFoods = meal.FoodItems.map(food => ({
+      foodId: food.foodId,
+      foodName: food.foodName,
+      nutrient: food.nutrient,
+      nutrient_value: food.nutrient_value
+    }));
+    console.log('Aliments formatés:', formattedFoods);
+    // Renvoyons un tableau d'aliments formaté
+    res.json({ foods: formattedFoods });
+    
   } catch (error) {
     console.error('Error fetching meal foods:', error);
     res.status(500).json({ error: 'Failed to fetch meal foods' });
@@ -624,3 +644,49 @@ app.post('/meals', async (req, res) => {
     throw error;
 }
   })
+
+  app.get('/goals/:goalId/meal', async (req, res) => {
+    try {
+      const { goalId } = req.params;
+      const meal = await Meal.findOne({
+        where: { goalId }
+      });
+      
+      if (!meal) {
+        return res.status(404).json({ message: 'No meal found for this goal' });
+      }
+      
+      res.json({ meal });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+
+  app.put('/meals/:mealId', async (req, res) => {
+    const transaction = await sequelize.transaction();
+    try {
+      const { mealId } = req.params;
+      const { foods } = req.body;
+  
+      // Supprimer les anciennes associations
+      await MealFoodItem.destroy({
+        where: { mealId },
+        transaction
+      });
+  
+      // Créer les nouvelles associations
+      for (const foodId of foods) {
+        await MealFoodItem.create({
+          mealId,
+          foodItemId: foodId,
+        }, { transaction });
+      }
+  
+      await transaction.commit();
+      res.json({ message: 'Meal updated successfully' });
+    } catch (error) {
+      await transaction.rollback();
+      res.status(400).json({ error: error.message });
+    }
+  });

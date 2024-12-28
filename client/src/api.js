@@ -142,24 +142,34 @@ export const getFoodList = async () => {
 }
 
 
-export const getMealFoods = async (meal) => {
+export const getMealFoods = async (mealId) => {
   try {
-    const response = await api.get(`/meals/${meal.mealId}/foods`);
-    return response.data;
+    console.log('Récupération des aliments pour le repas:', mealId);
+    const response = await api.get(`/meals/${mealId}/foods`);
+    console.log('Réponse complète de getMealFoods : ', response.data)
+    if (!response.data || !Array.isArray(response.data.foods)) {
+      console.warn('Pas de données ou foods n’est pas un tableau');
+      return [];
+    }
+    const foods = response.data;
+    console.log('Aliments récupérés:', foods);
+    console.log('Type de foods:', typeof foods);
+    console.log('Structure de foods:', Array.isArray(foods) ? foods : 'Pas un tableau');
+    return foods;
   } catch (error) {
     throw error.response?.data || error;
   }
 };
 
-export const addFoodToMeal = async (meal, foodId) => {
-  try {
-    console.log(`Adding food ${foodId} to meal ${meal.mealId}`); 
-    const response = await api.post(`/meals/${meal.mealId}/foods`, { foodId });
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
-};
+// export const addFoodToMeal = async (meal, foodId) => {
+//   try {
+//     console.log(`Adding food ${foodId} to meal ${meal.mealId}`); 
+//     const response = await api.post(`/meals/${meal.mealId}/foods`, { foodId });
+//     return response.data;
+//   } catch (error) {
+//     throw error.response?.data || error;
+//   }
+// };
 
 export const removeFoodFromMeal = async (mealId, foodId) => {
   try {
@@ -170,3 +180,25 @@ export const removeFoodFromMeal = async (mealId, foodId) => {
   }
 };
 
+export const getMealByGoalId = async (goalId) => {
+  try {
+    const response = await api.get(`/goals/${goalId}/meal`);
+    return response.data.meal;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      return null; // Pas de meal trouvé
+    }
+    throw error;
+  }
+};
+
+
+export const updateMeal = async (mealData) => {
+  try {
+    const response = await api.put(`/meals/${mealData.mealId}`, mealData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating meal:', error);
+    throw error.response?.data || error;
+  }
+};

@@ -3,37 +3,108 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateMenu.css'
 import BackArrow from '../components/BackArrow.js';
 import FoodList from '../components/FoodList.js';
-import { addFoodToMeal, removeFoodFromMeal, getMealFoods, createMeal } from '../api.js';
+import { addFoodToMeal, removeFoodFromMeal, getMealFoods, createMeal, updateMeal } from '../api.js';
 
 const CreateMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mealName, goals} = location.state || {};;
+  const { mealName, goals, existingMealId} = location.state || {};;
   const [selectedFoods, setSelectedFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [mealId, setMealId] = useState(null)
+  const [mealId, setMealId] = useState(existingMealId);
 
   // Charger les aliments déjà sélectionnés au chargement du composant
-  useEffect(() => {
-    console.log("Location state:", location.state); // Log des données passées via location.state
-  }, [location]);
+  
 
+  // useEffect(() => {
+  //     const loadMealFoods = async () => {
+  //     try {
+  //       const mealFoods = await getMealFoods(mealId);
+  //       setSelectedFoods(mealFoods);
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       setError('Error loading meal foods. Please try again later.');
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   loadMealFoods();
+  // }, [mealId]);
+  
   useEffect(() => {
-      const loadMealFoods = async () => {
+    const initializeMeal = async () => {
       try {
-        const mealFoods = await getMealFoods(mealId);
-        setSelectedFoods(mealFoods);
-        setIsLoading(false);
+        setIsLoading(true);
+        // Cas 1 : Le meal existe déjà
+        if (existingMealId) {
+          console.log('Initialisation avec mealId:', existingMealId);
+          const response = await getMealFoods(existingMealId);
+          const foods = response?.foods || [];
+          console.log('Aliments reçus dans initializeMeal:', foods);
+          
+          if (Array.isArray(foods) && foods.length > 0) {
+            setSelectedFoods([...foods]); // Utilise une copie de l'array
+            console.log('SelectedFoods mis à jour avec:', foods);
+          } else {
+            console.log('Aucun aliment trouvé ou tableau vide reçu');
+          }
+          // if (Array.isArray(foods) && foods.length > 0) {
+          //   setSelectedFoods(foods);
+          //   console.log('SelectedFoods mis à jour avec:', foods);
+          // } else {
+          //   console.log('Aucun aliment trouvé ou tableau vide reçu');
+          // }
+          // // setSelectedFoods(mealFoods);
+        }
+        // Cas 2 : Nouveau meal - on n'a rien à charger
+        
       } catch (err) {
-        setError('Error loading meal foods. Please try again later.');
+        console.error('Erreur dans initializeMeal:', err);
+        setError('Erreur lors du chargement des données. Veuillez réessayer.');
+      } finally {
         setIsLoading(false);
       }
     };
-    loadMealFoods();
-  }, [mealId]);
 
+    initializeMeal();
+  }, [existingMealId]);
+
+  //       // Si on n'a pas de mealId (nouveau repas)
+  //       if (!mealId) {
+  //         const mealData = {
+  //           mealName,
+  //           goalId: goals.goalId,
+  //           foods: [],
+  //           isTrainingMode: goals.isTrainingMode,
+  //           goals: goals.isTrainingMode 
+  //             ? {
+  //                 carbs: goals.carbsTrain,
+  //                 proteins: goals.proteinsTrain,
+  //                 fats: goals.fatsTrain
+  //               }
+  //             : {
+  //                 carbs: goals.carbsRest,
+  //                 proteins: goals.proteinsRest,
+  //                 fats: goals.fatsRest
+  //               }
+  //         };
+  //         const result = await createMeal(mealData);
+  //         setMealId(result.meal.mealId);
+  //       } else {
+  //         // Si on a déjà un mealId, charger les aliments existants
+  //         const mealFoods = await getMealFoods(mealId);
+  //         setSelectedFoods(mealFoods);
+  //       }
+  //     } catch (err) {
+  //       setError('Error initializing meal. Please try again later.');
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   initializeMeal();
+  // }, []);
 
   const handleSaveMenu = async () => {
     try {
@@ -57,9 +128,14 @@ const CreateMenu = () => {
               fats: goals.fatsRest
             }
       };
-      const result = await createMeal(mealData);
-      // const { mealId } = result.meal;
-      //setMealId(mealId)
+      if (existingMealId) {
+        // Mise à jour d'un meal existant
+        await updateMeal({ ...mealData, mealId: existingMealId });
+      } else {
+        // Création d'un nouveau meal
+        const result = await createMeal(mealData);
+        setMealId(result.meal.mealId);
+      }
 
       navigate('/home', { 
         state: { 

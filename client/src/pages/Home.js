@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, getGoals, signout } from '../api.js';
+import { getProfile, getGoals, signout, getMealByGoalId } from '../api.js';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,10 +64,13 @@ const Home = () => {
     setIsTrainingMode(e.target.checked);
   };
   
-  const handleCreateMenu = (goal) => {
-    navigate('/create-menu', {
+  const handleCreateMenu = async (goal) => {
+    try{
+      const existingMeal = await getMealByGoalId(goal.goalId);
+      navigate('/create-menu', {
       state: {
         mealName: goal.mealName,
+        existingMealId: existingMeal?.mealId,
         goals: {
           goalId: goal.goalId,
           carbsTrain: goal.carbsTrain,
@@ -80,6 +83,9 @@ const Home = () => {
         }
       }
     });
+    } catch (error) {
+      console.error('Erreur lors de la vérification du meal:', error);
+    }
   };
 
   return (
