@@ -139,6 +139,26 @@ const Home = () => {
     }
   };
 
+  // Fonction pour calculer la quantité maximale consommable
+  const calculateMaxPortion = (food, goal, isTraining) => {
+    // Détermine l'objectif en fonction du mode d'entraînement
+    const targetValues = {
+      carbs: isTraining ? goal.carbsTrain : goal.carbsRest,
+      proteins: isTraining ? goal.proteinsTrain : goal.proteinsRest,
+      fats: isTraining ? goal.fatsTrain : goal.fatsRest
+    };
+
+    // Récupère la valeur cible pour le nutriment de l'aliment
+    const targetValue = targetValues[food.nutrient.toLowerCase()];
+    
+    // Calcul de la portion maximale (règle de trois)
+    // Si l'aliment contient 'nutrient_value' pour 100g
+    // Alors pour atteindre 'targetValue', il faut :
+    const maxPortion = (targetValue * 100) / food.nutrient_value;
+    
+    return Math.round(maxPortion); // Arrondi pour plus de lisibilité
+  };
+
   return (
     <div>
         
@@ -195,14 +215,22 @@ const Home = () => {
                 <div className="saved-foods">
                   <h4>Selected foods:</h4>
                   <ul className="saved-foods-list">
-                    {savedFoods[goal.goalId].map((food) => (
+                    {savedFoods[goal.goalId].map((food) => {
+                    const maxPortion = calculateMaxPortion(food, goal, isTrainingMode);
+                    return (
                       <li key={food.foodId} className="saved-food-item">
-                        <span className="food-name">{food.foodName}</span>
-                        <span className="food-nutrient">
-                          ({food.nutrient_value}g {food.nutrient})
-                        </span>
+                        <div className="food-info">
+                          <span className="food-name">{food.foodName}</span>
+                          <span className="food-max-portion">
+                            max: {maxPortion}g
+                          </span>
+                          <span className="food-nutrient">
+                            ({food.nutrient_value}g {food.nutrient}/100g)
+                          </span>
+                        </div>
                       </li>
-                    ))}
+                    );
+                  })}
                   </ul>
                 </div>
               )}

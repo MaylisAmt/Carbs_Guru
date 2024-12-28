@@ -111,3 +111,14 @@ input[type="checkbox"].toggle:checked + label::after{
     color: #666;
     margin-left: 0.5rem;
   }
+  .food-max-portion {
+    color: #2c5282;
+    font-weight: 500;
+  }
+
+  .food-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
