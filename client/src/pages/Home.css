@@ -76,3 +76,38 @@ input[type="checkbox"].toggle:checked + label::after{
 }
 
 
+.saved-foods {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+  
+  .saved-foods h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .saved-foods-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .saved-food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    font-size: 0.85rem;
+  }
+  
+  .food-name {
+    font-weight: 500;
+  }
+  
+  .food-nutrient {
+    color: #666;
+    margin-left: 0.5rem;
+  }

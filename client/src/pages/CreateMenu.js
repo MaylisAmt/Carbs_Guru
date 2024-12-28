@@ -17,21 +17,6 @@ const CreateMenu = () => {
 
   // Charger les aliments déjà sélectionnés au chargement du composant
   
-
-  // useEffect(() => {
-  //     const loadMealFoods = async () => {
-  //     try {
-  //       const mealFoods = await getMealFoods(mealId);
-  //       setSelectedFoods(mealFoods);
-  //       setIsLoading(false);
-  //     } catch (err) {
-  //       setError('Error loading meal foods. Please try again later.');
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   loadMealFoods();
-  // }, [mealId]);
-  
   useEffect(() => {
     const initializeMeal = async () => {
       try {
@@ -69,42 +54,6 @@ const CreateMenu = () => {
 
     initializeMeal();
   }, [existingMealId]);
-
-  //       // Si on n'a pas de mealId (nouveau repas)
-  //       if (!mealId) {
-  //         const mealData = {
-  //           mealName,
-  //           goalId: goals.goalId,
-  //           foods: [],
-  //           isTrainingMode: goals.isTrainingMode,
-  //           goals: goals.isTrainingMode 
-  //             ? {
-  //                 carbs: goals.carbsTrain,
-  //                 proteins: goals.proteinsTrain,
-  //                 fats: goals.fatsTrain
-  //               }
-  //             : {
-  //                 carbs: goals.carbsRest,
-  //                 proteins: goals.proteinsRest,
-  //                 fats: goals.fatsRest
-  //               }
-  //         };
-  //         const result = await createMeal(mealData);
-  //         setMealId(result.meal.mealId);
-  //       } else {
-  //         // Si on a déjà un mealId, charger les aliments existants
-  //         const mealFoods = await getMealFoods(mealId);
-  //         setSelectedFoods(mealFoods);
-  //       }
-  //     } catch (err) {
-  //       setError('Error initializing meal. Please try again later.');
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   initializeMeal();
-  // }, []);
 
   const handleSaveMenu = async () => {
     try {

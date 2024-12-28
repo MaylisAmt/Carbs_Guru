@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, getGoals, signout, getMealByGoalId } from '../api.js';
+import { getProfile, getGoals, signout, getMealByGoalId, getMealFoods } from '../api.js';
 import './Home.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isTrainingMode, setIsTrainingMode] = useState(false)
     const [goalsWithMeals, setGoalsWithMeals] = useState({});
+    const [savedFoods, setSavedFoods] = useState({});
     const navigate = useNavigate();
  
     useEffect(() => {
@@ -30,11 +31,17 @@ const Home = () => {
             setGoals(goalsData.goals || []);
 
             const mealsStatus = {};
-            for (const goal of goals) {
+            const foodsData = {};
+            for (const goal of goalsData.goals || []) {
               try {
                 const existingMeal = await getMealByGoalId(goal.goalId);
                 mealsStatus[goal.goalId] = existingMeal ? true : false;
                 console.log(`récupération du meal avec le goal ID :  ${goal.goalId} et le mealStatus : `, mealsStatus[goal.goalId]);
+                if (existingMeal) {
+                  // Fetch foods for this meal
+                  const mealFoods = await getMealFoods(existingMeal.mealId);
+                  foodsData[goal.goalId] = mealFoods.foods || [];
+                }
               } catch (err) {
                 console.error(`Erreur lors de la vérification du meal pour le goal ${goal.goalId}:`, err);
                 mealsStatus[goal.goalId] = false;
@@ -83,11 +90,18 @@ const Home = () => {
       const updateMealsStatus = async () => {
         try {
           const mealsStatus = {};
+          const foodsData = {};
           for (const goal of goals) {
             const existingMeal = await getMealByGoalId(goal.goalId);
             mealsStatus[goal.goalId] = existingMeal ? true : false;
+            if (existingMeal) {
+              // Fetch and store foods for updated meals
+              const mealFoods = await getMealFoods(existingMeal.mealId);
+              foodsData[goal.goalId] = mealFoods.foods || [];
+            }
           }
           setGoalsWithMeals(mealsStatus);
+          setSavedFoods(foodsData);
         } catch (err) {
           console.error('Erreur lors de la mise à jour des statuts de meals:', err);
         }
@@ -176,6 +190,22 @@ const Home = () => {
                 </div>
                 )}
               </div>
+               {/* Affichage des aliments sauvegardés */}
+               {goalsWithMeals[goal.goalId] && savedFoods[goal.goalId] && (
+                <div className="saved-foods">
+                  <h4>Selected foods:</h4>
+                  <ul className="saved-foods-list">
+                    {savedFoods[goal.goalId].map((food) => (
+                      <li key={food.foodId} className="saved-food-item">
+                        <span className="food-name">{food.foodName}</span>
+                        <span className="food-nutrient">
+                          ({food.nutrient_value}g {food.nutrient})
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <div className='create-menu'>
                 <button 
                 className='create-menu-btn'
