@@ -164,6 +164,92 @@ const Goal = sequelize.define('Goal', {
   });
   Goal.belongsTo(User);
 
+// define table food and meal to link them together to a goal : 
+const Meal = sequelize.define('Meal', {
+  mealId : {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  }, 
+  goalId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: Goal, //Use the model object as the foreign key
+      key: 'goalId'
+    }
+  }
+}, {
+  tableName: 'meals'
+});  
+
+  const FoodItem = sequelize.define('FoodItem', {
+  foodId: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  },
+  // mealId: {
+  //   type: DataTypes.UUID,
+  //   allowNull: false,
+  //   references: {
+  //     model: Meal, //Use the model object as the foreign key
+  //     key: 'mealId'
+  //   }
+  // },
+  foodName:{
+    type : DataTypes.STRING,
+    allowNull: false
+  },
+  nutrient:{
+    type : DataTypes.ENUM('carbs', 'proteins', 'fats'),
+    allowNull:false
+  },
+  nutrient_value : {
+    type : DataTypes.FLOAT,
+    allowNull: true
+  }
+}, {
+  tableName: 'food_items'
+});
+
+const MealFoodItem = sequelize.define('MealFoodItem', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
+  },
+  mealId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'meals',
+      key: 'mealId'
+    }
+  },
+  foodItemId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'food_items',
+      key: 'foodId'
+    }
+  }
+}, {
+  tableName: 'meal_food_items',
+  timestamps: true  
+});
+
+Meal.belongsToMany(FoodItem, {
+  through: MealFoodItem,
+  foreignKey: 'mealId'
+});
+
+FoodItem.belongsToMany(Meal, {
+  through: MealFoodItem,
+  foreignKey: 'foodItemId'
+});
+
 app.get('/test', (req, res, next) => {
     try {
         res.status(200).json({message: 'Page de test backend'});
@@ -350,15 +436,15 @@ app.post('/signup', async (req, res) => {
         }
       });
 
-      //Retrive all goals corresponding to the authenticated user
+      
       app.get('/goals', authenticateToken, async (req, res) => {
         try {
-          const userId = req.user.id; // Get the user ID from the authenticated token
+          const userId = req.user.id; 
       
           // Find all goals for this user
           const goals = await Goal.findAll({
             where: { userId },
-            order: [['createdAt', 'DESC']] // Optional: Order by creation date, newest first
+            order: [['createdAt', 'DESC']] 
           });
       
           if (goals.length === 0) {
@@ -440,3 +526,182 @@ app.post('/signup', async (req, res) => {
       }
 
       });
+
+      
+app.get('/food-items', async (req, res) => {
+  try {
+    const foodItems = await FoodItem.findAll({
+      order: [['createdAt', 'DESC']]
+    });
+    res.setHeader('Content-Type', 'application/json');
+    res.json(foodItems);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des aliments:', error);
+    res.status(500).json({ 
+      message: "Erreur lors de la récupération des aliments" 
+    });
+  }
+});
+
+app.get('/meals/:mealId/foods', async (req, res) => {
+  try {
+    const { mealId } = req.params;
+    console.log('Recherche du repas avec ID:', mealId);
+    const meal = await Meal.findByPk(mealId, {
+      include: [{
+        model: FoodItem,
+        through: MealFoodItem,
+        attributes: ['foodId', 'foodName', 'nutrient', 'nutrient_value']
+      }]
+    });
+    console.log('Repas trouvé:', meal)
+
+    if (!meal) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
+    // Si le repas est trouvé mais n'a pas d'aliments
+    if (!meal.FoodItems) {
+      console.log('Pas d\'aliments trouvés pour ce repas');
+      return res.json({ foods: [] });
+    }
+    // Formatons les données comme nous en avons besoin
+    const formattedFoods = meal.FoodItems.map(food => ({
+      foodId: food.foodId,
+      foodName: food.foodName,
+      nutrient: food.nutrient,
+      nutrient_value: food.nutrient_value
+    }));
+    console.log('Aliments formatés:', formattedFoods);
+    // Renvoyons un tableau d'aliments formaté
+    res.json({ foods: formattedFoods });
+    
+  } catch (error) {
+    console.error('Error fetching meal foods:', error);
+    res.status(500).json({ error: 'Failed to fetch meal foods' });
+  }
+});
+
+app.post('/meals/:mealId/foods', async (req, res) => {
+  try {
+    const { mealId } = req.params;
+    const { foodId } = req.body;
+  
+    const existingAssociation = await MealFoodItem.findOne({
+      where: {
+        mealId,
+        foodItemId: foodId
+      }
+    });
+
+    if (!existingAssociation) {
+      await MealFoodItem.create({
+        mealId,
+        foodItemId: foodId
+      });
+    }
+
+    res.status(200).json({ message: 'Food item added to meal successfully' });
+  } catch (error) {
+    console.error('Error adding food to meal:', error);
+    res.status(500).json({ error: 'Failed to add food to meal' });
+  }
+});
+
+
+app.delete('/meals/:mealId/foods/:foodId', async (req, res) => {
+  try {
+    const { mealId, foodId } = req.params;
+
+    await MealFoodItem.destroy({
+      where: {
+        mealId,
+        foodItemId: foodId
+      }
+    });
+
+    res.status(200).json({ message: 'Food item removed from meal successfully' });
+  } catch (error) {
+    console.error('Error removing food from meal:', error);
+    res.status(500).json({ error: 'Failed to remove food from meal' });
+  }
+});
+
+
+app.post('/meals', async (req, res) => {
+
+  const { mealName, goalId, foods, isTrainingMode } = req.body;
+  console.log('Request body /meals:', req.body)
+
+  const transaction = await sequelize.transaction();
+  try {
+    // Étape 1 : Créer le repas
+    const meal = await Meal.create({
+      mealName,
+      goalId,
+      isTrainingMode
+    }, { transaction });
+
+    // Étape 2 : Ajouter des éléments alimentaires
+    for (const foodId of foods) {
+        await MealFoodItem.create({
+            mealId: meal.mealId,
+            foodItemId: foodId,
+        }, { transaction });
+    }
+
+    // Étape 3 : Commit si tout est réussi
+    await transaction.commit();
+    res.status(201).json({ message: 'Meal created successfully', meal });
+} catch (error) {
+    // Rollback si une erreur se produit
+    await transaction.rollback();
+    res.status(400).json({ error: error.message });
+    throw error;
+}
+  })
+
+  app.get('/goals/:goalId/meal', async (req, res) => {
+    try {
+      const { goalId } = req.params;
+      const meal = await Meal.findOne({
+        where: { goalId }
+      });
+      
+      if (!meal) {
+        return res.status(404).json({ message: 'No meal found for this goal' });
+      }
+      
+      res.json({ meal });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+
+  app.put('/meals/:mealId', async (req, res) => {
+    const transaction = await sequelize.transaction();
+    try {
+      const { mealId } = req.params;
+      const { foods } = req.body;
+  
+      // Supprimer les anciennes associations
+      await MealFoodItem.destroy({
+        where: { mealId },
+        transaction
+      });
+  
+      // Créer les nouvelles associations
+      for (const foodId of foods) {
+        await MealFoodItem.create({
+          mealId,
+          foodItemId: foodId,
+        }, { transaction });
+      }
+  
+      await transaction.commit();
+      res.json({ message: 'Meal updated successfully' });
+    } catch (error) {
+      await transaction.rollback();
+      res.status(400).json({ error: error.message });
+    }
+  });

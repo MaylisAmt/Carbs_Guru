@@ -14,6 +14,8 @@ import AddGoals from './components/AddGoals.js';
 import Footer from './components/Footer.js';
 import Header from './components/Header.js';
 import LegalNotice from './components/LegalNotice.js';
+import CreateMenu from './pages/CreateMenu.js';
+import FoodList from './components/FoodList.js';
 
 
 // async function whoAmI(accessToken) {
@@ -67,6 +69,8 @@ const App = () => {
             <Route path="/goals/:goalId" element={<EditGoals />} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/legalnotice" element={<LegalNotice/>} />
+            <Route path="/create-menu" element={<CreateMenu />} />
+            <Route path="/food-items" element={<FoodList/>} />
           </Routes>
           <Footer />
         </Router>

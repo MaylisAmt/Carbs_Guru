@@ -118,3 +118,87 @@ export const deleteGoal = async (goalId) => {
     throw error.response?.data || error;
   }
 };
+
+export const createMeal = async (mealData) => {
+  try {
+    const response = await api.post('/meals', mealData);
+    console.log('Meal created:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating meal:', error)
+    console.log ('Meal data to save:', mealData);
+    throw error.response?.data || error;
+  }
+};
+
+export const getFoodList = async () => {
+  try {
+    const response = await api.get('/food-items');
+    // console.log("getFoodList response.data: ", response.data);
+    return response.data
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+
+export const getMealFoods = async (mealId) => {
+  try {
+    console.log('Récupération des aliments pour le repas:', mealId);
+    const response = await api.get(`/meals/${mealId}/foods`);
+    console.log('Réponse complète de getMealFoods : ', response.data)
+    if (!response.data || !Array.isArray(response.data.foods)) {
+      console.warn('Pas de données ou foods n’est pas un tableau');
+      return [];
+    }
+    const foods = response.data;
+    console.log('Aliments récupérés:', foods);
+    console.log('Type de foods:', typeof foods);
+    console.log('Structure de foods:', Array.isArray(foods) ? foods : 'Pas un tableau');
+    return foods;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// export const addFoodToMeal = async (meal, foodId) => {
+//   try {
+//     console.log(`Adding food ${foodId} to meal ${meal.mealId}`); 
+//     const response = await api.post(`/meals/${meal.mealId}/foods`, { foodId });
+//     return response.data;
+//   } catch (error) {
+//     throw error.response?.data || error;
+//   }
+// };
+
+export const removeFoodFromMeal = async (mealId, foodId) => {
+  try {
+    const response = await api.delete(`/meals/${mealId}/foods/${foodId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const getMealByGoalId = async (goalId) => {
+  try {
+    const response = await api.get(`/goals/${goalId}/meal`);
+    return response.data.meal;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      return null; // Pas de meal trouvé
+    }
+    throw error;
+  }
+};
+
+
+export const updateMeal = async (mealData) => {
+  try {
+    const response = await api.put(`/meals/${mealData.mealId}`, mealData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating meal:', error);
+    throw error.response?.data || error;
+  }
+};

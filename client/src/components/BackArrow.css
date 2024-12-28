@@ -1,0 +1,20 @@
+.back{
+    display : flex;
+    width : 100%;
+    align-items: flex-start;
+    align-self: flex-start;
+}
+
+.backButton{
+    background-color: transparent;
+    cursor : pointer;
+    border : none;
+    text-decoration: underline;
+}
+
+.arrow{
+    width : 10px;
+    height : 10px;
+    cursor: pointer;
+    margin-right : 4px;
+}
