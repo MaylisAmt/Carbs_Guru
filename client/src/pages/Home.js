@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getProfile, getGoals, signout, getMealByGoalId } from '../api.js';
 import './Home.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Home = () => {
-
+  const location = useLocation();
     const [profile, setProfile] = useState(null);
     const [goals, setGoals] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [isTrainingMode, setIsTrainingMode] = useState(false)
+    const [goalsWithMeals, setGoalsWithMeals] = useState({});
     const navigate = useNavigate();
  
     useEffect(() => {
@@ -24,15 +25,29 @@ const Home = () => {
           const profileData = await getProfile(abortController.signal);
           setProfile(profileData);
            // Then fetch goals
-        try {
-          const goalsData = await getGoals(abortController.signal);
-          setGoals(goalsData.goals || []);
-        } catch (err) {
-          // Ignore abort errors
-          if (err.name === 'AbortError') {
-            return;
-          }
-          
+          try {
+            const goalsData = await getGoals(abortController.signal);
+            setGoals(goalsData.goals || []);
+
+            const mealsStatus = {};
+            for (const goal of goals) {
+              try {
+                const existingMeal = await getMealByGoalId(goal.goalId);
+                mealsStatus[goal.goalId] = existingMeal ? true : false;
+                console.log(`récupération du meal avec le goal ID :  ${goal.goalId} et le mealStatus : `, mealsStatus[goal.goalId]);
+              } catch (err) {
+                console.error(`Erreur lors de la vérification du meal pour le goal ${goal.goalId}:`, err);
+                mealsStatus[goal.goalId] = false;
+              }
+            }   
+            setGoalsWithMeals(mealsStatus);
+
+          } catch (err) {
+            // Ignore abort errors
+            if (err.name === 'AbortError') {
+              return;
+            }
+
           // If the error message indicates no goals, treat it as an empty goals state
           if (err.message === 'No goals found for this user' || err.response?.status === 404) {
             setGoals([]);
@@ -41,24 +56,46 @@ const Home = () => {
             setError('Failed to fetch goals');
           }
         }
-      } catch (err) {
-        // Ignore abort errors
-        if (err.name === 'AbortError') {
-          return;
+        } catch (err) {
+          // Ignore abort errors
+          if (err.name === 'AbortError') {
+            return;
+          }
+          
+          console.error('Error fetching profile:', err);
+          setError('Failed to fetch profile');
+        } finally {
+          setIsLoading(false);
         }
-        
-        console.error('Error fetching profile:', err);
-        setError('Failed to fetch profile');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      };
 
-    fetchProfileAndGoals();
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+      fetchProfileAndGoals();
+      return () => {
+        abortController.abort();
+      };
+    }, []);
+
+  // Effet pour mettre à jour l'état quand on revient avec un nouveau meal
+  useEffect(() => {
+    if (location.state?.message === 'Menu créé avec succès !' || 
+        location.state?.message === 'Menu mis à jour avec succès !') {
+      // Refetch les meals pour mettre à jour l'affichage
+      const updateMealsStatus = async () => {
+        try {
+          const mealsStatus = {};
+          for (const goal of goals) {
+            const existingMeal = await getMealByGoalId(goal.goalId);
+            mealsStatus[goal.goalId] = existingMeal ? true : false;
+          }
+          setGoalsWithMeals(mealsStatus);
+        } catch (err) {
+          console.error('Erreur lors de la mise à jour des statuts de meals:', err);
+        }
+      };
+      
+      updateMealsStatus();
+    }
+  }, [location.state, goals]);
 
   const handleToggleChange = (e) => {
     setIsTrainingMode(e.target.checked);
@@ -144,7 +181,7 @@ const Home = () => {
                 className='create-menu-btn'
                 onClick={() => handleCreateMenu(goal)}
                 >
-                  Create my menu
+                  {goalsWithMeals[goal.goalId] ? 'Modify my menu' : 'Create my menu'}
                 </button>
               </div> 
             </li>
