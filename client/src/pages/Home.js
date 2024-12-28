@@ -32,6 +32,7 @@ const Home = () => {
 
             const mealsStatus = {};
             const foodsData = {};
+            // Initialiser foodsData avec un tableau vide pour chaque goal
             for (const goal of goalsData.goals || []) {
               try {
                 const existingMeal = await getMealByGoalId(goal.goalId);
@@ -48,6 +49,7 @@ const Home = () => {
               }
             }   
             setGoalsWithMeals(mealsStatus);
+            setSavedFoods(foodsData)
 
           } catch (err) {
             // Ignore abort errors
@@ -81,35 +83,6 @@ const Home = () => {
         abortController.abort();
       };
     }, []);
-
-  // Effet pour mettre à jour l'état quand on revient avec un nouveau meal
-  useEffect(() => {
-    if (location.state?.message === 'Menu créé avec succès !' || 
-        location.state?.message === 'Menu mis à jour avec succès !') {
-      // Refetch les meals pour mettre à jour l'affichage
-      const updateMealsStatus = async () => {
-        try {
-          const mealsStatus = {};
-          const foodsData = {};
-          for (const goal of goals) {
-            const existingMeal = await getMealByGoalId(goal.goalId);
-            mealsStatus[goal.goalId] = existingMeal ? true : false;
-            if (existingMeal) {
-              // Fetch and store foods for updated meals
-              const mealFoods = await getMealFoods(existingMeal.mealId);
-              foodsData[goal.goalId] = mealFoods.foods || [];
-            }
-          }
-          setGoalsWithMeals(mealsStatus);
-          setSavedFoods(foodsData);
-        } catch (err) {
-          console.error('Erreur lors de la mise à jour des statuts de meals:', err);
-        }
-      };
-      
-      updateMealsStatus();
-    }
-  }, [location.state, goals]);
 
   const handleToggleChange = (e) => {
     setIsTrainingMode(e.target.checked);
