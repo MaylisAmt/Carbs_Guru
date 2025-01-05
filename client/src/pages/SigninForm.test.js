@@ -76,7 +76,7 @@ describe('SigninForm Component', () => {
     jest.runAllTimers();
 
     expect(setToken).toHaveBeenCalledWith('fake-token');
-    expect(mockNavigate).toHaveBeenCalledWith('/profile');
+    expect(mockNavigate).toHaveBeenCalledWith('/home');
   });
 });
 
