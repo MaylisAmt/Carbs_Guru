@@ -10,9 +10,19 @@ User.hasMany(Goal, {
 });
 Goal.belongsTo(User);
 
+Goal.hasMany(Meal, {
+  foreignKey: 'goalId',
+  onDelete: 'CASCADE'  
+});
+
 Meal.belongsToMany(FoodItem, {
   through: MealFoodItem,
   foreignKey: 'mealId'
+});
+
+Meal.belongsTo(Goal, {
+  foreignKey: 'goalId',
+  onDelete: 'CASCADE'
 });
 
 FoodItem.belongsToMany(Meal, {
