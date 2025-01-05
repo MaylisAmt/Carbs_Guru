@@ -36,6 +36,7 @@ const Home = () => {
             for (const goal of goalsData.goals || []) {
               try {
                 const existingMeal = await getMealByGoalId(goal.goalId);
+                console.log('Réponse complète de getMealByGoalId:', existingMeal);
                 mealsStatus[goal.goalId] = existingMeal ? true : false;
                 console.log(`récupération du meal avec le goal ID :  ${goal.goalId} et le mealStatus : `, mealsStatus[goal.goalId]);
                 if (existingMeal) {
@@ -45,7 +46,12 @@ const Home = () => {
                   console.log('existing meal avec mealId : ', existingMeal.mealId)
                 }
               } catch (err) {
-                console.error(`Erreur lors de la vérification du meal pour le goal ${goal.goalId}:`, err);
+                console.error(`Erreur détaillée pour le goal ${goal.goalId}:`, {
+                  message: err.message,
+                  status: err.response?.status,
+                  data: err.response?.data
+                });
+                // console.error(`Erreur lors de la vérification du meal pour le goal ${goal.goalId}:`, err);
                 mealsStatus[goal.goalId] = false;
               }
             }   

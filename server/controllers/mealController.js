@@ -127,20 +127,3 @@ export const updateMealFoods = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-export const getMealByGoal = async (req, res) => {
-  try {
-    const { goalId } = req.params;
-    const meal = await Meal.findOne({
-      where: { goalId }
-    });
-    
-    if (!meal) {
-      return res.status(404).json({ message: 'No meal found for this goal' });
-    }
-    
-    res.json({ meal });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};

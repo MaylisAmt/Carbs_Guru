@@ -4,7 +4,8 @@ import {
   createGoal,
   getGoals,
   updateGoal,
-  deleteGoal
+  deleteGoal,
+  getMealByGoalId
 } from '../controllers/goalController.js';
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.use(authenticateToken);
 
 router.post('/', createGoal);
 router.get('/', getGoals);
+router.get('/:goalId/meal', getMealByGoalId);
 router.put('/:goalId', updateGoal);
 router.delete('/:goalId', deleteGoal);
 
