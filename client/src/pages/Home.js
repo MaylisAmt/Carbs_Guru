@@ -42,6 +42,7 @@ const Home = () => {
                   // Fetch foods for this meal
                   const mealFoods = await getMealFoods(existingMeal.mealId);
                   foodsData[goal.goalId] = mealFoods.foods || [];
+                  console.log('existing meal avec mealId : ', existingMeal.mealId)
                 }
               } catch (err) {
                 console.error(`Erreur lors de la vérification du meal pour le goal ${goal.goalId}:`, err);
