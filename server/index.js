@@ -150,12 +150,6 @@ const Goal = sequelize.define('Goal', {
   }, {
     tableName: 'goals'
   });
-  
-  // Define the relationship
-  User.hasMany(Goal, {
-    foreignKey: "userId",
-  });
-  Goal.belongsTo(User);
 
 // define table food and meal to link them together to a goal : 
 const Meal = sequelize.define('Meal', {
@@ -233,15 +227,31 @@ const MealFoodItem = sequelize.define('MealFoodItem', {
   timestamps: true  
 });
 
+
+User.hasMany(Goal, {
+  foreignKey: "userId",
+});
+Goal.belongsTo(User);
+
 Meal.belongsToMany(FoodItem, {
   through: MealFoodItem,
   foreignKey: 'mealId'
+});
+Meal.belongsTo(Goal, {
+  foreignKey: 'goalId',
+  onDelete: 'CASCADE'
 });
 
 FoodItem.belongsToMany(Meal, {
   through: MealFoodItem,
   foreignKey: 'foodItemId'
 });
+
+Goal.hasMany(Meal, {
+  foreignKey: 'goalId',
+  onDelete: 'CASCADE'  
+});
+
 
 app.get('/test', (req, res, next) => {
     try {
@@ -266,7 +276,7 @@ app.post('/signup', async (req, res) => {
         password,
         name
         });
-        // Generate JWT token
+        
         const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
@@ -373,12 +383,6 @@ app.post('/signup', async (req, res) => {
 
     app.post('/goals', authenticateToken, async (req, res) => {
         try {
-
-         /*  console.log('User from token:', req.user); // Debug log to see the user object
-          console.log('User ID type:', typeof req.user.id); // Debug log to see the ID type
-          console.log('User ID value:', req.user.id); // Debug log to see the actual ID
- */
-
           const {
             mealName,
             carbsTrain,
@@ -388,18 +392,15 @@ app.post('/signup', async (req, res) => {
             fatsTrain,
             fatsRest
           } = req.body;
-      
-          // The user ID is now available in req.user, as set by authenticateToken
-          const userId = req.user.id; // Assuming the JWT payload includes userId
-      
-          // Check if the user exists
+ 
+          const userId = req.user.id;
+
           const user = await User.findByPk(userId);
-          console.log('Found user:', user ? user.id : 'Not found'); // Debug log
+          // console.log('Found user:', user ? user.id : 'Not found'); 
           if (!user) {
             return res.status(404).json({ message: 'Goals User not found' });
           }
-      
-          // Create the goal
+
           const newGoal = await Goal.create({
             userId,
             mealName,
@@ -491,21 +492,36 @@ app.post('/signup', async (req, res) => {
 
       app.delete('/goals/:goalId', authenticateToken, async (req, res) => {
         try {
+          const transaction = await sequelize.transaction();
           const { goalId } = req.params;
           const userId = req.user.id;
 
-          const goal = await Goal.findOne({ where: { goalId: goalId, userId } });
+          const goal = await Goal.findOne({ 
+            where: { 
+              goalId: goalId, 
+              userId 
+            },
+            include: [{
+              model: Meal
+            }],
+            transaction 
+          });
+          if (!goal) {
+            await transaction.rollback();
+            return res.status(404).json({ 
+              message: 'Goal not found or does not belong to the user' 
+            });
+          }
+          if (!goal) {
+            return res.status(404).json({ message: 'Goal not found or does not belong to the user' });
+          }
 
-        if (!goal) {
-          return res.status(404).json({ message: 'Goal not found or does not belong to the user' });
-        }
-
-        //Delete the goal
-        await goal.destroy();
-
+        await goal.destroy({transaction});
+        await transaction.commit();
         res.json({ message: 'Goal deleted successfully', goalId: goalId });
 
       } catch (error) {
+        await transaction.rollback();
         console.error('Error deleting goal: ', error);
         res.status(500).json({ message: "Error deleting goal", error: error.message });
       }
