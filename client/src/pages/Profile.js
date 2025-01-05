@@ -177,8 +177,9 @@ return (
                 <button 
                   onClick={() => handleDelete(goal.goalId)}
                   className="button-delete-btn"
+                  data-testid={`delete-button-${goal.goalId}`}
                 >
-                  <img src={bin} alt='delete-button' className='delete-button-img' />
+                  <img src={bin} alt='deletebutton' className='delete-button-img' />
                 </button>
               </div>
               <h3 className="goal-title">{goal.mealName}</h3>

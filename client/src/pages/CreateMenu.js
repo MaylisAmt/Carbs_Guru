@@ -21,31 +21,21 @@ const CreateMenu = () => {
     const initializeMeal = async () => {
       try {
         setIsLoading(true);
-        // Cas 1 : Le meal existe déjà
         if (existingMealId) {
-          console.log('Initialisation avec mealId:', existingMealId);
+          //console.log('Initialisation avec mealId:', existingMealId);
           const response = await getMealFoods(existingMealId);
           const foods = response?.foods || [];
-          console.log('Aliments reçus dans initializeMeal:', foods);
+          //console.log('Aliments reçus dans initializeMeal:', foods);
           
           if (Array.isArray(foods) && foods.length > 0) {
             setSelectedFoods([...foods]); // Utilise une copie de l'array
-            console.log('SelectedFoods mis à jour avec:', foods);
+            //console.log('SelectedFoods mis à jour avec:', foods);
           } else {
-            console.log('Aucun aliment trouvé ou tableau vide reçu');
+            //console.log('Aucun aliment trouvé ou tableau vide reçu');
           }
-          // if (Array.isArray(foods) && foods.length > 0) {
-          //   setSelectedFoods(foods);
-          //   console.log('SelectedFoods mis à jour avec:', foods);
-          // } else {
-          //   console.log('Aucun aliment trouvé ou tableau vide reçu');
-          // }
-          // // setSelectedFoods(mealFoods);
         }
-        // Cas 2 : Nouveau meal - on n'a rien à charger
-        
       } catch (err) {
-        console.error('Erreur dans initializeMeal:', err);
+        //console.error('Erreur dans initializeMeal:', err);
         setError('Erreur lors du chargement des données. Veuillez réessayer.');
       } finally {
         setIsLoading(false);
@@ -62,7 +52,6 @@ const CreateMenu = () => {
       const mealData = {
         mealName,
         goalId: goals.goalId, 
-        //mealId,
         foods: selectedFoods.map(food => food.foodId),
         isTrainingMode: goals.isTrainingMode,
         goals: goals.isTrainingMode 
@@ -78,10 +67,8 @@ const CreateMenu = () => {
             }
       };
       if (existingMealId) {
-        // Mise à jour d'un meal existant
         await updateMeal({ ...mealData, mealId: existingMealId });
       } else {
-        // Création d'un nouveau meal
         const result = await createMeal(mealData);
         setMealId(result.meal.mealId);
       }
