@@ -147,14 +147,12 @@ export const getMealFoods = async (mealId) => {
     console.log('Récupération des aliments pour le repas:', mealId);
     const response = await api.get(`/meals/${mealId}/foods`);
     console.log('Réponse complète de getMealFoods : ', response.data)
-    if (!response.data || !Array.isArray(response.data.foods)) {
-      console.warn('Pas de données ou foods n’est pas un tableau');
+    if (!response.data) {
+      console.warn('Pas de données dans la réponse');
       return [];
     }
     const foods = response.data;
     console.log('Aliments récupérés:', foods);
-    console.log('Type de foods:', typeof foods);
-    console.log('Structure de foods:', Array.isArray(foods) ? foods : 'Pas un tableau');
     return foods;
   } catch (error) {
     throw error.response?.data || error;
@@ -193,6 +191,7 @@ export const getMealByGoalId = async (goalId) => {
 };
 
 
+
 export const updateMeal = async (mealData) => {
   try {
     const response = await api.put(`/meals/${mealData.mealId}`, mealData);
@@ -202,3 +201,5 @@ export const updateMeal = async (mealData) => {
     throw error.response?.data || error;
   }
 };
+
+
