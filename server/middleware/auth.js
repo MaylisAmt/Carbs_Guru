@@ -18,7 +18,7 @@ export const authenticateToken = (req, res, next) => {
 };
 
 export const validatePasswordSecurity = (password) => {
-  // Minimum 8 chars, at least 1 uppercase, 1 number and 1 special char
-  const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  // Minimum 12 chars, at least 1 uppercase, 1 number and 1 special char
+  const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
   return regex.test(password);
 };
