@@ -10,6 +10,7 @@ import {
 } from '../controllers/mealController.js';
 
 const router = express.Router();
+router.use(authenticateToken);
 
 // Routes principales des repas
 router.post('/', createMeal);

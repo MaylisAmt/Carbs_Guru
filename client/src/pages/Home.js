@@ -226,7 +226,6 @@ const Home = () => {
          
          ))}
           </ul>
-          <h2 className='section-title'>Your daily total</h2>
         </div>
       
 

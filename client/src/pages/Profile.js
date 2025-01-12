@@ -215,10 +215,6 @@ return (
             </li>
           ))}
           </ul>
-          <h2 className='section-title'>Your daily total</h2>
-          <div className='daily-card'>
-          
-          </div>
           <button
             onClick={handleAddGoal}
             className="add-goal-btn"
