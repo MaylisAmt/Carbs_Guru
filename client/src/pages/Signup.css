@@ -235,3 +235,16 @@ form {
   color: green;
   margin-top: 1rem;
 }
+
+@media (max-width: 768px) {
+  .signup-input {
+   width: 100%;
+  }
+  .container {
+   padding: 0;
+   padding-top: 2rem;
+   padding-bottom: 2rem;
+   width: 55%;
+   margin: 0;
+  }
+}
