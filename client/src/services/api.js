@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken, removeToken } from './auth.js';
+import { getToken, removeToken } from '../auth/auth.js';
 
 const API_URL = 'http://localhost:3000';
 

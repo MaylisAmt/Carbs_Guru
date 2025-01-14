@@ -62,8 +62,8 @@
 // export default Signin;
 
 import React, { useState } from 'react';
-import { signin } from '../api.js';
-import { setToken } from '../auth.js';
+import { signin } from '../services/api.js';
+import { setToken } from '../auth/auth.js';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import './Signin.css';

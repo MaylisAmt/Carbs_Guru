@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SigninForm from './Signin.js';
-import { signin } from '../api.js';
-import { setToken } from '../auth.js';
+import { signin } from '../services/api.js';
+import { setToken } from '../auth/auth.js';
 import { MemoryRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 

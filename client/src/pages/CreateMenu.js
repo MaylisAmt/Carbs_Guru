@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateMenu.css'
 import BackArrow from '../components/BackArrow.js';
 import FoodList from '../components/FoodList.js';
-import { addFoodToMeal, removeFoodFromMeal, getMealFoods, createMeal, updateMeal } from '../api.js';
+import { addFoodToMeal, removeFoodFromMeal, getMealFoods, createMeal, updateMeal } from '../services/api.js';
 
 const CreateMenu = () => {
   const location = useLocation();

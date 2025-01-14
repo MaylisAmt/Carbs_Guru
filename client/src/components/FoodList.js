@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getFoodList } from '../api.js';
+import { getFoodList } from '../services/api.js';
 import './FoodList.css'
 
 const FoodList = ({ onFoodSelect }) => {

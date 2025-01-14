@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, getGoals, signout, getMealByGoalId, getMealFoods } from '../api.js';
+import { getProfile, getGoals, signout, getMealByGoalId, getMealFoods } from '../services/api.js';
 import './Home.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 

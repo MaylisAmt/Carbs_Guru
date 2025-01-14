@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, getGoals, signout, deleteGoal } from '../api.js';
+import { getProfile, getGoals, signout, deleteGoal } from '../services/api.js';
 import { useNavigate } from 'react-router-dom';
 import icon from '../assets/icon.png';
 import editpencil from '../assets/editpencil.png';
